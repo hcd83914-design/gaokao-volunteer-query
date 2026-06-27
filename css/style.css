@@ -439,6 +439,10 @@ button:hover {
   background: var(--orange);
 }
 
+.tag-new {
+  background: #6d5bd0;
+}
+
 .tag-stable,
 .tag-middle {
   background: var(--blue-700);
@@ -489,6 +493,44 @@ button:hover {
   background: #fff8ed;
   color: #7a3b08;
   font-size: 13px;
+}
+
+.status-badge,
+.status-normal {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.status-badge {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+.status-normal {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.recommend-blocks {
+  display: grid;
+  gap: 18px;
+}
+
+.group-title {
+  margin: 0;
+  color: var(--blue-900);
+  font-size: 18px;
+}
+
+.chance-empty {
+  margin: 8px 0;
+  color: #9a3412;
+  font-weight: 700;
 }
 
 .algorithm-note {

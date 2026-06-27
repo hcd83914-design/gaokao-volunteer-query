@@ -1,62 +1,7114 @@
-/* 兜底模拟数据：直接打开 index.html 且浏览器禁止读取本地 JSON 时使用。 */
+/* 数据会优先从 data/data.json 读取；直接打开 index.html 时使用下方兜底数据。 */
 const fallbackData = [
-  { id: 1, schoolName: "重庆工程学院", schoolEnglishName: "Chongqing Institute of Engineering", province: "海南", city: "重庆市", year: 2025, planYear: 2026, enrollCategory: "综合改革", majorName: "计算机类（软件）", minScore: 511, minRank: 34386, subjectRequirement: "物理、化学", planCount: 3, schoolLocation: "重庆市", schoolLevel: "本科", schoolDescription: "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。", featureMajors: ["计算机类", "电子信息类", "自动化类", "智能制造工程", "网络与新媒体"] },
-  { id: 2, schoolName: "重庆工程学院", schoolEnglishName: "Chongqing Institute of Engineering", province: "海南", city: "重庆市", year: 2025, planYear: 2026, enrollCategory: "综合改革", majorName: "计算机类（大数据与智能科学）", minScore: 507, minRank: 35551, subjectRequirement: "物理、化学", planCount: 2, schoolLocation: "重庆市", schoolLevel: "本科", schoolDescription: "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。", featureMajors: ["计算机类", "电子信息类", "自动化类", "智能制造工程", "网络与新媒体"] },
-  { id: 3, schoolName: "重庆工程学院", schoolEnglishName: "Chongqing Institute of Engineering", province: "海南", city: "重庆市", year: 2025, planYear: 2026, enrollCategory: "综合改革", majorName: "电子信息类", minScore: 507, minRank: 35551, subjectRequirement: "物理、化学", planCount: 5, schoolLocation: "重庆市", schoolLevel: "本科", schoolDescription: "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。", featureMajors: ["计算机类", "电子信息类", "自动化类", "智能制造工程", "网络与新媒体"] },
-  { id: 4, schoolName: "重庆工程学院", schoolEnglishName: "Chongqing Institute of Engineering", province: "海南", city: "重庆市", year: 2025, planYear: 2026, enrollCategory: "综合改革", majorName: "自动化类", minScore: 505, minRank: 36110, subjectRequirement: "物理、化学", planCount: 5, schoolLocation: "重庆市", schoolLevel: "本科", schoolDescription: "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。", featureMajors: ["计算机类", "电子信息类", "自动化类", "智能制造工程", "网络与新媒体"] },
-  { id: 5, schoolName: "重庆工程学院", schoolEnglishName: "Chongqing Institute of Engineering", province: "海南", city: "重庆市", year: 2025, planYear: 2026, enrollCategory: "综合改革", majorName: "智能制造工程", minScore: 511, minRank: 34386, subjectRequirement: "物理、化学", planCount: 2, schoolLocation: "重庆市", schoolLevel: "本科", schoolDescription: "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。", featureMajors: ["计算机类", "电子信息类", "自动化类", "智能制造工程", "网络与新媒体"] },
-  { id: 6, schoolName: "重庆工程学院", schoolEnglishName: "Chongqing Institute of Engineering", province: "海南", city: "重庆市", year: 2025, planYear: 2026, enrollCategory: "综合改革", majorName: "电气工程及其自动化", minScore: null, minRank: null, subjectRequirement: "物理、化学", planCount: 2, schoolLocation: "重庆市", schoolLevel: "本科", schoolDescription: "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。", featureMajors: ["计算机类", "电子信息类", "自动化类", "智能制造工程", "网络与新媒体"] },
-  { id: 7, schoolName: "重庆工程学院", schoolEnglishName: "Chongqing Institute of Engineering", province: "海南", city: "重庆市", year: 2025, planYear: 2026, enrollCategory: "综合改革", majorName: "数字经济", minScore: null, minRank: null, subjectRequirement: "物理", planCount: 4, schoolLocation: "重庆市", schoolLevel: "本科", schoolDescription: "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。", featureMajors: ["计算机类", "电子信息类", "自动化类", "智能制造工程", "网络与新媒体"] },
-  { id: 8, schoolName: "重庆工程学院", schoolEnglishName: "Chongqing Institute of Engineering", province: "海南", city: "重庆市", year: 2025, planYear: 2026, enrollCategory: "综合改革", majorName: "网络与新媒体", minScore: 549, minRank: 23760, subjectRequirement: "不限", planCount: 2, schoolLocation: "重庆市", schoolLevel: "本科", schoolDescription: "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。", featureMajors: ["计算机类", "电子信息类", "自动化类", "智能制造工程", "网络与新媒体"] },
-  { id: 9, schoolName: "重庆工程学院", schoolEnglishName: "Chongqing Institute of Engineering", province: "海南", city: "重庆市", year: 2025, planYear: 2026, enrollCategory: "综合改革", majorName: "工商管理类", minScore: 549, minRank: 23760, subjectRequirement: "不限", planCount: 2, schoolLocation: "重庆市", schoolLevel: "本科", schoolDescription: "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。", featureMajors: ["计算机类", "电子信息类", "自动化类", "智能制造工程", "网络与新媒体"] }
+  {
+    "id": 1,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "海南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "综合改革",
+    "majorName": "计算机类（软件）",
+    "minScore": 511,
+    "minRank": 34386,
+    "subjectRequirement": "物理、化学",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627210958_553_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 2,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "海南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "综合改革",
+    "majorName": "计算机类（大数据与智能科学）",
+    "minScore": 507,
+    "minRank": 35551,
+    "subjectRequirement": "物理、化学",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627210958_553_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 3,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "海南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "综合改革",
+    "majorName": "电子信息类",
+    "minScore": 507,
+    "minRank": 35551,
+    "subjectRequirement": "物理、化学",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627210958_553_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 4,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "海南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "综合改革",
+    "majorName": "自动化类",
+    "minScore": 505,
+    "minRank": 36110,
+    "subjectRequirement": "物理、化学",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627210958_553_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 5,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "海南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "综合改革",
+    "majorName": "智能制造工程",
+    "minScore": 511,
+    "minRank": 34386,
+    "subjectRequirement": "物理、化学",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627210958_553_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 6,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "海南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "综合改革",
+    "majorName": "电气工程及其自动化",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627210958_553_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 7,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "海南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "综合改革",
+    "majorName": "数字经济",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627210958_553_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 8,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "海南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "综合改革",
+    "majorName": "网络与新媒体",
+    "minScore": 549,
+    "minRank": 23760,
+    "subjectRequirement": "不限",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627210958_553_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 9,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "海南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "综合改革",
+    "majorName": "工商管理类",
+    "minScore": 549,
+    "minRank": 23760,
+    "subjectRequirement": "不限",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627210958_553_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 10,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "安徽",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "电子商务",
+    "minScore": 496,
+    "minRank": 35339,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627210958_554_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 11,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "安徽",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "网络与新媒体",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627210958_554_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 12,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "安徽",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "工商管理类",
+    "minScore": 499,
+    "minRank": 33914,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627210958_554_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 13,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "安徽",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（软件）",
+    "minScore": 495,
+    "minRank": 142426,
+    "subjectRequirement": "物理、化学",
+    "planCount": 6,
+    "batch": "",
+    "sourceImage": "微信图片_20260627210958_554_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 14,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "安徽",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（大数据与智能科学）",
+    "minScore": 492,
+    "minRank": 146903,
+    "subjectRequirement": "物理、化学",
+    "planCount": 6,
+    "batch": "",
+    "sourceImage": "微信图片_20260627210958_554_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 15,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "安徽",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "自动化类",
+    "minScore": 494,
+    "minRank": 143937,
+    "subjectRequirement": "物理、化学",
+    "planCount": 6,
+    "batch": "",
+    "sourceImage": "微信图片_20260627210958_554_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 16,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "安徽",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能制造工程",
+    "minScore": 491,
+    "minRank": 148355,
+    "subjectRequirement": "物理、化学",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627210958_554_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 17,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "安徽",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电气工程及其自动化",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627210958_554_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 18,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "安徽",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "大数据管理与应用",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理",
+    "planCount": 6,
+    "batch": "",
+    "sourceImage": "微信图片_20260627210958_554_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 19,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "福建",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "电子商务",
+    "minScore": 467,
+    "minRank": 21665,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211000_556_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 20,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "福建",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "网络与新媒体",
+    "minScore": 465,
+    "minRank": 22150,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211000_556_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 21,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "福建",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "工商管理类",
+    "minScore": 466,
+    "minRank": 21897,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211000_556_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 22,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "福建",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（软件）",
+    "minScore": 490,
+    "minRank": 77780,
+    "subjectRequirement": "物理、化学",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211000_556_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 23,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "福建",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（大数据与智能科学）",
+    "minScore": 489,
+    "minRank": 78616,
+    "subjectRequirement": "物理、化学",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211000_556_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 24,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "福建",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（计算机与物联网）",
+    "minScore": 496,
+    "minRank": 72818,
+    "subjectRequirement": "物理、化学",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211000_556_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 25,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "福建",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电子信息类",
+    "minScore": 491,
+    "minRank": 76979,
+    "subjectRequirement": "物理、化学",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211000_556_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 26,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "福建",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能电网信息工程",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211000_556_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 27,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "福建",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "自动化类",
+    "minScore": 492,
+    "minRank": 76112,
+    "subjectRequirement": "物理、化学",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211000_556_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 28,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "福建",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能制造工程",
+    "minScore": 489,
+    "minRank": 78616,
+    "subjectRequirement": "物理、化学",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211000_556_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 29,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "福建",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "数字经济",
+    "minScore": 490,
+    "minRank": 77780,
+    "subjectRequirement": "物理",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211000_556_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 30,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "甘肃",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "网络与新媒体",
+    "minScore": 435,
+    "minRank": 20327,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211001_557_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 31,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "甘肃",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "电子商务",
+    "minScore": 433,
+    "minRank": 20759,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211001_557_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 32,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "甘肃",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "工商管理类",
+    "minScore": 439,
+    "minRank": 19497,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211001_557_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 33,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "甘肃",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（软件）",
+    "minScore": 417,
+    "minRank": 71049,
+    "subjectRequirement": "物理、化学",
+    "planCount": 6,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211001_557_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 34,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "甘肃",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（计算机与物联网）",
+    "minScore": 417,
+    "minRank": 71049,
+    "subjectRequirement": "物理、化学",
+    "planCount": 6,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211001_557_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 35,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "甘肃",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电子信息类",
+    "minScore": 419,
+    "minRank": 69952,
+    "subjectRequirement": "物理、化学",
+    "planCount": 6,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211001_557_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 36,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "甘肃",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能电网信息工程",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211001_557_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 37,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "甘肃",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "自动化类",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211001_557_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 38,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "甘肃",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能制造工程",
+    "minScore": 415,
+    "minRank": 72176,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211001_557_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 39,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "甘肃",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电气工程及其自动化",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211001_557_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 40,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "甘肃",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能建造",
+    "minScore": 416,
+    "minRank": 71627,
+    "subjectRequirement": "物理、化学",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211001_557_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 41,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "甘肃",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "数字经济",
+    "minScore": 398,
+    "minRank": 81669,
+    "subjectRequirement": "物理",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211001_557_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 42,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "甘肃",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "工程造价",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211001_557_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 43,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "广东",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "电子商务",
+    "minScore": 511,
+    "minRank": 49666,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211001_558_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 44,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "广东",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "工商管理类",
+    "minScore": 512,
+    "minRank": 48883,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211001_558_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 45,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "广东",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（软件）",
+    "minScore": 492,
+    "minRank": 180224,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211001_558_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 46,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "广东",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电子信息类",
+    "minScore": 491,
+    "minRank": 181971,
+    "subjectRequirement": "物理、化学",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211001_558_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 47,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "广东",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "自动化类",
+    "minScore": 496,
+    "minRank": 173027,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211001_558_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 48,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "广东",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能制造工程",
+    "minScore": 492,
+    "minRank": 180224,
+    "subjectRequirement": "物理、化学",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211001_558_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 49,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "广东",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "数字经济",
+    "minScore": 492,
+    "minRank": 180224,
+    "subjectRequirement": "物理",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211001_558_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 50,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "广西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "网络与新媒体",
+    "minScore": 431,
+    "minRank": 40357,
+    "subjectRequirement": "历史",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211002_559_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 51,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "广西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "电子商务",
+    "minScore": 428,
+    "minRank": 41669,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211002_559_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 52,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "广西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "供应链管理",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211002_559_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 53,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "广西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "工商管理类",
+    "minScore": 428,
+    "minRank": 41669,
+    "subjectRequirement": "历史",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211002_559_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 54,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "广西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（软件）",
+    "minScore": 407,
+    "minRank": 138410,
+    "subjectRequirement": "物理、化学",
+    "planCount": 16,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211002_559_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 55,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "广西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（大数据与智能科学）",
+    "minScore": 412,
+    "minRank": 133471,
+    "subjectRequirement": "物理、化学",
+    "planCount": 13,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211002_559_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 56,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "广西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（计算机与物联网）",
+    "minScore": 407,
+    "minRank": 138410,
+    "subjectRequirement": "物理、化学",
+    "planCount": 13,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211002_559_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 57,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "广西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "大数据管理与应用",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理",
+    "planCount": 6,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211002_559_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 58,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "广西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电子信息类",
+    "minScore": 409,
+    "minRank": 136424,
+    "subjectRequirement": "物理、化学",
+    "planCount": 11,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211002_559_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 59,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "广西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "区块链工程",
+    "minScore": 406,
+    "minRank": 139395,
+    "subjectRequirement": "物理、化学",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211002_559_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 60,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "广西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "自动化类",
+    "minScore": 406,
+    "minRank": 139395,
+    "subjectRequirement": "物理、化学",
+    "planCount": 12,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211002_559_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 61,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "广西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电影制作",
+    "minScore": 408,
+    "minRank": 137473,
+    "subjectRequirement": "物理、化学",
+    "planCount": 6,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211002_559_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 62,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "广西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "工程造价",
+    "minScore": 380,
+    "minRank": 165558,
+    "subjectRequirement": "物理",
+    "planCount": 10,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211002_559_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 63,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "广西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "土木工程",
+    "minScore": 377,
+    "minRank": 168584,
+    "subjectRequirement": "物理、化学",
+    "planCount": 8,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211002_559_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 64,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "广西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能建造",
+    "minScore": 392,
+    "minRank": 153683,
+    "subjectRequirement": "物理、化学",
+    "planCount": 8,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211002_559_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 65,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "贵州",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "电子商务",
+    "minScore": 489,
+    "minRank": 26151,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211003_560_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 66,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "贵州",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "工商管理类",
+    "minScore": 489,
+    "minRank": 26151,
+    "subjectRequirement": "历史",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211003_560_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 67,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "贵州",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "网络与新媒体",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "历史",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211003_560_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 68,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "贵州",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（软件）",
+    "minScore": 479,
+    "minRank": 69406,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211003_560_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 69,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "贵州",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（大数据与智能科学）",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211003_560_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 70,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "贵州",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（计算机与物联网）",
+    "minScore": 485,
+    "minRank": 64257,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211003_560_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 71,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "贵州",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电子信息类",
+    "minScore": 485,
+    "minRank": 64257,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211003_560_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 72,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "贵州",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "自动化类",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211003_560_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 73,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "贵州",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能电网信息工程",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211003_560_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 74,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "贵州",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电气工程及其自动化",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211003_560_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 75,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "贵州",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "大数据管理与应用",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211003_560_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 76,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "贵州",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能建造",
+    "minScore": 475,
+    "minRank": 72987,
+    "subjectRequirement": "物理、化学",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211003_560_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 77,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "河南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "网络与新媒体",
+    "minScore": 512,
+    "minRank": 52832,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_561_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 78,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "河南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "电子商务",
+    "minScore": 510,
+    "minRank": 54420,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_561_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 79,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "河南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "供应链管理",
+    "minScore": 509,
+    "minRank": 55195,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_561_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 80,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "河南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "工商管理类",
+    "minScore": 509,
+    "minRank": 55195,
+    "subjectRequirement": "历史",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_561_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 81,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "河南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（软件）",
+    "minScore": 496,
+    "minRank": 217439,
+    "subjectRequirement": "物理、化学",
+    "planCount": 10,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_561_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 82,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "河南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（大数据与智能科学）",
+    "minScore": 494,
+    "minRank": 221305,
+    "subjectRequirement": "物理、化学",
+    "planCount": 8,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_561_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 83,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "河南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（计算机与物联网）",
+    "minScore": 491,
+    "minRank": 227136,
+    "subjectRequirement": "物理、化学",
+    "planCount": 6,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_561_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 84,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "河南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "大数据管理与应用",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_561_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 85,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "河南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电子信息类",
+    "minScore": 493,
+    "minRank": 223265,
+    "subjectRequirement": "物理、化学",
+    "planCount": 10,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_561_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 86,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "河南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "区块链工程",
+    "minScore": 490,
+    "minRank": 229094,
+    "subjectRequirement": "物理、化学",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_561_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 87,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "河南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "自动化类",
+    "minScore": 490,
+    "minRank": 229094,
+    "subjectRequirement": "物理、化学",
+    "planCount": 8,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_561_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 88,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "河南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能制造工程",
+    "minScore": 495,
+    "minRank": 219377,
+    "subjectRequirement": "物理、化学",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_561_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 89,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "河南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电影制作",
+    "minScore": 489,
+    "minRank": 231000,
+    "subjectRequirement": "物理、化学",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_561_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 90,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "河南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电气工程及其自动化",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_561_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 91,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "河南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能建造",
+    "minScore": 442,
+    "minRank": 321305,
+    "subjectRequirement": "物理、化学",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_561_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 92,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "河南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "土木工程",
+    "minScore": 441,
+    "minRank": 323149,
+    "subjectRequirement": "物理、化学",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_561_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 93,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "河南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "数字经济",
+    "minScore": 474,
+    "minRank": 260370,
+    "subjectRequirement": "物理",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_561_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 94,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "河南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "工程造价",
+    "minScore": 466,
+    "minRank": 275961,
+    "subjectRequirement": "物理",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_561_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 95,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "河南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "工商管理类",
+    "minScore": 476,
+    "minRank": 256447,
+    "subjectRequirement": "物理",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_561_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 96,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "黑龙江",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "供应链管理",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_562_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 97,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "黑龙江",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "工商管理类",
+    "minScore": 430,
+    "minRank": 18361,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_562_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 98,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "黑龙江",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "大数据管理与应用",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_562_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 99,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "黑龙江",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（软件）",
+    "minScore": 417,
+    "minRank": 62893,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_562_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 100,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "黑龙江",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（计算机与物联网）",
+    "minScore": 408,
+    "minRank": 66529,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_562_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 101,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "黑龙江",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电子信息类",
+    "minScore": 400,
+    "minRank": 69792,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_562_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 102,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "黑龙江",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "自动化类",
+    "minScore": 399,
+    "minRank": 70212,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_562_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 103,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "黑龙江",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电气工程及其自动化",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_562_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 104,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "黑龙江",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "数字经济",
+    "minScore": 399,
+    "minRank": 70212,
+    "subjectRequirement": "物理",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_562_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 105,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "黑龙江",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "工程造价",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211004_562_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 106,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "湖北",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "电子商务",
+    "minScore": 501,
+    "minRank": 28478,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211005_563_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 107,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "湖北",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "工商管理类",
+    "minScore": 505,
+    "minRank": 27147,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211005_563_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 108,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "湖北",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（软件）",
+    "minScore": 475,
+    "minRank": 108619,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211005_563_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 109,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "湖北",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（大数据与智能科学）",
+    "minScore": 475,
+    "minRank": 108619,
+    "subjectRequirement": "物理、化学",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211005_563_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 110,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "湖北",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（计算机与物联网）",
+    "minScore": 474,
+    "minRank": 109513,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211005_563_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 111,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "湖北",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "大数据管理与应用",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211005_563_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 112,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "湖北",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电子信息类",
+    "minScore": 476,
+    "minRank": 107761,
+    "subjectRequirement": "物理、化学",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211005_563_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 113,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "湖北",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能电网信息工程",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211005_563_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 114,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "湖北",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "自动化类",
+    "minScore": 475,
+    "minRank": 108619,
+    "subjectRequirement": "物理、化学",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211005_563_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 115,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "湖北",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能制造工程",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211005_563_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 116,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "江西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "电子商务",
+    "minScore": 511,
+    "minRank": 31293,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211006_564_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 117,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "江西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "工商管理类",
+    "minScore": 509,
+    "minRank": 32473,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211006_564_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 118,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "江西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（软件）",
+    "minScore": 499,
+    "minRank": 85623,
+    "subjectRequirement": "物理、化学",
+    "planCount": 6,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211006_564_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 119,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "江西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（大数据与智能科学）",
+    "minScore": 495,
+    "minRank": 90756,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211006_564_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 120,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "江西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（计算机与物联网）",
+    "minScore": 493,
+    "minRank": 93255,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211006_564_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 121,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "江西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电子信息类",
+    "minScore": 488,
+    "minRank": 99653,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211006_564_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 122,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "江西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能电网信息工程",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211006_564_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 123,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "江西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "自动化类",
+    "minScore": 491,
+    "minRank": 95753,
+    "subjectRequirement": "物理、化学",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211006_564_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 124,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "江西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能制造工程",
+    "minScore": 485,
+    "minRank": 103528,
+    "subjectRequirement": "物理、化学",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211006_564_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 125,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "宁夏",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "网络与新媒体",
+    "minScore": 446,
+    "minRank": 5785,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211006_565_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 126,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "宁夏",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "工商管理类",
+    "minScore": 441,
+    "minRank": 6179,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211006_565_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 127,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "宁夏",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（软件）",
+    "minScore": 417,
+    "minRank": 20929,
+    "subjectRequirement": "物理、化学",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211006_565_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 128,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "宁夏",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（大数据与智能科学）",
+    "minScore": 421,
+    "minRank": 20127,
+    "subjectRequirement": "物理、化学",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211006_565_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 129,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "宁夏",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（计算机与物联网）",
+    "minScore": 417,
+    "minRank": 20929,
+    "subjectRequirement": "物理、化学",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211006_565_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 130,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "宁夏",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电子信息类",
+    "minScore": 415,
+    "minRank": 21343,
+    "subjectRequirement": "物理、化学",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211006_565_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 131,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "宁夏",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能电网信息工程",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211006_565_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 132,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "宁夏",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "自动化类",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211006_565_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 133,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "宁夏",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电气工程及其自动化",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211006_565_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 134,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "陕西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "电子商务",
+    "minScore": 469,
+    "minRank": 25701,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211007_566_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 135,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "陕西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "供应链管理",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211007_566_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 136,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "陕西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "工商管理类",
+    "minScore": 468,
+    "minRank": 25991,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211007_566_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 137,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "陕西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（软件）",
+    "minScore": 455,
+    "minRank": 87056,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211007_566_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 138,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "陕西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（大数据与智能科学）",
+    "minScore": 456,
+    "minRank": 86326,
+    "subjectRequirement": "物理、化学",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211007_566_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 139,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "陕西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（计算机与物联网）",
+    "minScore": 458,
+    "minRank": 84818,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211007_566_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 140,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "陕西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电子信息类",
+    "minScore": 459,
+    "minRank": 84115,
+    "subjectRequirement": "物理、化学",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211007_566_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 141,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "陕西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能电网信息工程",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211007_566_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 142,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "陕西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "自动化类",
+    "minScore": 458,
+    "minRank": 84818,
+    "subjectRequirement": "物理、化学",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211007_566_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 143,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "陕西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能制造工程",
+    "minScore": 444,
+    "minRank": 95089,
+    "subjectRequirement": "物理、化学",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211007_566_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 144,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "陕西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电气工程及其自动化",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211007_566_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 145,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "陕西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电影制作",
+    "minScore": 429,
+    "minRank": 105751,
+    "subjectRequirement": "物理、化学",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211007_566_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 146,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "陕西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "数字经济",
+    "minScore": 447,
+    "minRank": 92962,
+    "subjectRequirement": "物理",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211007_566_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 147,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "陕西",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能建造",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211007_566_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 148,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "网络与新媒体",
+    "minScore": 499,
+    "minRank": 48590,
+    "subjectRequirement": "历史",
+    "planCount": 20,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 149,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "电子商务",
+    "minScore": 495,
+    "minRank": 51298,
+    "subjectRequirement": "历史",
+    "planCount": 10,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 150,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "供应链管理",
+    "minScore": 498,
+    "minRank": 49287,
+    "subjectRequirement": "历史",
+    "planCount": 10,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 151,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "工商管理类",
+    "minScore": 495,
+    "minRank": 51298,
+    "subjectRequirement": "历史",
+    "planCount": 10,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 152,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（软件）",
+    "minScore": 486,
+    "minRank": 146356,
+    "subjectRequirement": "物理、化学",
+    "planCount": 90,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 153,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（大数据与智能科学）",
+    "minScore": 485,
+    "minRank": 147761,
+    "subjectRequirement": "物理、化学",
+    "planCount": 50,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 154,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（计算机与物联网）",
+    "minScore": 486,
+    "minRank": 146356,
+    "subjectRequirement": "物理、化学",
+    "planCount": 50,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 155,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "大数据管理与应用",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理",
+    "planCount": 10,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 156,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电子信息类",
+    "minScore": 479,
+    "minRank": 156077,
+    "subjectRequirement": "物理、化学",
+    "planCount": 40,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 157,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能电网信息工程",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 14,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 158,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "自动化类",
+    "minScore": 483,
+    "minRank": 150538,
+    "subjectRequirement": "物理、化学",
+    "planCount": 56,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 159,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能制造工程",
+    "minScore": 479,
+    "minRank": 156077,
+    "subjectRequirement": "物理、化学",
+    "planCount": 19,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 160,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电气工程及其自动化",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 10,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 161,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "区块链工程",
+    "minScore": 485,
+    "minRank": 147761,
+    "subjectRequirement": "物理、化学",
+    "planCount": 15,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 162,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电影制作",
+    "minScore": 475,
+    "minRank": 161520,
+    "subjectRequirement": "物理、化学",
+    "planCount": 15,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 163,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能建造",
+    "minScore": 476,
+    "minRank": 160168,
+    "subjectRequirement": "物理、化学",
+    "planCount": 15,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 164,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "土木工程",
+    "minScore": 475,
+    "minRank": 161520,
+    "subjectRequirement": "物理、化学",
+    "planCount": 10,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 165,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "工程造价",
+    "minScore": 477,
+    "minRank": 158786,
+    "subjectRequirement": "物理",
+    "planCount": 10,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 166,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "数字经济",
+    "minScore": 474,
+    "minRank": 162900,
+    "subjectRequirement": "物理",
+    "planCount": 20,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 167,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电子商务",
+    "minScore": 476,
+    "minRank": 160168,
+    "subjectRequirement": "物理",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 168,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "供应链管理",
+    "minScore": 475,
+    "minRank": 161520,
+    "subjectRequirement": "物理",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 169,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "工商管理类",
+    "minScore": 479,
+    "minRank": 156077,
+    "subjectRequirement": "物理",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 170,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "设计学类",
+    "majorName": "设计学类",
+    "minScore": 507,
+    "minRank": 9432,
+    "subjectRequirement": "物理/历史",
+    "planCount": 22,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 171,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "设计学类",
+    "majorName": "动画",
+    "minScore": 507,
+    "minRank": 9432,
+    "subjectRequirement": "物理/历史",
+    "planCount": 12,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 172,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "四川",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "设计学类",
+    "majorName": "环境设计",
+    "minScore": 507,
+    "minRank": 9432,
+    "subjectRequirement": "物理/历史",
+    "planCount": 12,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_567_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 173,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "新疆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "文史类",
+    "majorName": "网络与新媒体",
+    "minScore": 360,
+    "minRank": 11471,
+    "subjectRequirement": "文史类",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_568_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 174,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "新疆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "文史类",
+    "majorName": "电子商务",
+    "minScore": 353,
+    "minRank": 12182,
+    "subjectRequirement": "文史类",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_568_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 175,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "新疆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "文史类",
+    "majorName": "工商管理类",
+    "minScore": 346,
+    "minRank": 12885,
+    "subjectRequirement": "文史类",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_568_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 176,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "新疆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "理工类",
+    "majorName": "计算机类（软件）",
+    "minScore": 314,
+    "minRank": 37895,
+    "subjectRequirement": "理工类",
+    "planCount": 13,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_568_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 177,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "新疆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "理工类",
+    "majorName": "计算机类（大数据与智能科学）",
+    "minScore": 311,
+    "minRank": 38488,
+    "subjectRequirement": "理工类",
+    "planCount": 10,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_568_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 178,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "新疆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "理工类",
+    "majorName": "计算机类（计算机与物联网）",
+    "minScore": 300,
+    "minRank": 40557,
+    "subjectRequirement": "理工类",
+    "planCount": 6,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_568_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 179,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "新疆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "理工类",
+    "majorName": "区块链工程",
+    "minScore": 284,
+    "minRank": 43416,
+    "subjectRequirement": "理工类",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_568_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 180,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "新疆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "理工类",
+    "majorName": "电子信息类",
+    "minScore": 303,
+    "minRank": 40038,
+    "subjectRequirement": "理工类",
+    "planCount": 8,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_568_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 181,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "新疆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "理工类",
+    "majorName": "自动化类",
+    "minScore": 318,
+    "minRank": 37184,
+    "subjectRequirement": "理工类",
+    "planCount": 8,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_568_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 182,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "新疆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "理工类",
+    "majorName": "智能制造工程",
+    "minScore": 309,
+    "minRank": 38909,
+    "subjectRequirement": "理工类",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_568_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 183,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "新疆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "理工类",
+    "majorName": "大数据管理与应用",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "理工类",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_568_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 184,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "新疆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "理工类",
+    "majorName": "智能电网信息工程",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "理工类",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_568_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 185,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "新疆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "理工类",
+    "majorName": "电气工程及其自动化",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "理工类",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_568_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 186,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "新疆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "理工类",
+    "majorName": "智能建造",
+    "minScore": 297,
+    "minRank": 41116,
+    "subjectRequirement": "理工类",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_568_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 187,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "新疆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "理工类",
+    "majorName": "工程造价",
+    "minScore": 286,
+    "minRank": 43077,
+    "subjectRequirement": "理工类",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_568_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 188,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "新疆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "理工类",
+    "majorName": "土木工程",
+    "minScore": 283,
+    "minRank": 43591,
+    "subjectRequirement": "理工类",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_568_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 189,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "新疆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "理工类",
+    "majorName": "电影制作",
+    "minScore": 298,
+    "minRank": 40925,
+    "subjectRequirement": "理工类",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_568_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 190,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "新疆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "理工类",
+    "majorName": "数字经济",
+    "minScore": 296,
+    "minRank": 41296,
+    "subjectRequirement": "理工类",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_568_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 191,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "新疆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "理工类",
+    "majorName": "工商管理类",
+    "minScore": 284,
+    "minRank": 43416,
+    "subjectRequirement": "理工类",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_568_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 192,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "新疆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "理工类（南疆）",
+    "majorName": "计算机类（软件）",
+    "minScore": 331,
+    "minRank": 34666,
+    "subjectRequirement": "理工类",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211008_568_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 193,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "云南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "网络与新媒体",
+    "minScore": 498,
+    "minRank": 28212,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211009_569_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 194,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "云南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "电子商务",
+    "minScore": 491,
+    "minRank": 31075,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211009_569_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 195,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "云南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "工商管理类",
+    "minScore": 492,
+    "minRank": 30679,
+    "subjectRequirement": "历史",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211009_569_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 196,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "云南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（软件）",
+    "minScore": 471,
+    "minRank": 84481,
+    "subjectRequirement": "物理、化学",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211009_569_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 197,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "云南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（大数据与智能科学）",
+    "minScore": 467,
+    "minRank": 87639,
+    "subjectRequirement": "物理、化学",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211009_569_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 198,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "云南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（计算机与物联网）",
+    "minScore": 463,
+    "minRank": 90658,
+    "subjectRequirement": "物理、化学",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211009_569_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 199,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "云南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电子信息类",
+    "minScore": 477,
+    "minRank": 79927,
+    "subjectRequirement": "物理、化学",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211009_569_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 200,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "云南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能电网信息工程",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211009_569_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 201,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "云南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "自动化类",
+    "minScore": 480,
+    "minRank": 77767,
+    "subjectRequirement": "物理、化学",
+    "planCount": 5,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211009_569_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 202,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "云南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能制造工程",
+    "minScore": 476,
+    "minRank": 80652,
+    "subjectRequirement": "物理、化学",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211009_569_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 203,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "云南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电气工程及其自动化",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "物理、化学",
+    "planCount": 4,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211009_569_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 204,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "云南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电影制作",
+    "minScore": 444,
+    "minRank": 105016,
+    "subjectRequirement": "物理、化学",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211009_569_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 205,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "云南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "数字经济",
+    "minScore": 458,
+    "minRank": 94444,
+    "subjectRequirement": "物理",
+    "planCount": 3,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211009_569_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 206,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "云南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电子商务",
+    "minScore": 465,
+    "minRank": 89168,
+    "subjectRequirement": "物理",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211009_569_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 207,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "云南",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "供应链管理",
+    "minScore": 460,
+    "minRank": 92913,
+    "subjectRequirement": "物理",
+    "planCount": 2,
+    "batch": "",
+    "sourceImage": "微信图片_20260627211009_569_174.jpg",
+    "sourceFolder": "省外的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 208,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "网络与新媒体",
+    "minScore": 461,
+    "minRank": 28475,
+    "subjectRequirement": "",
+    "planCount": 108,
+    "batch": "",
+    "sourceImage": "历史类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 209,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "电子商务",
+    "minScore": 446,
+    "minRank": 32868,
+    "subjectRequirement": "",
+    "planCount": 118,
+    "batch": "",
+    "sourceImage": "历史类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 210,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "供应链管理",
+    "minScore": 457,
+    "minRank": 29657,
+    "subjectRequirement": "",
+    "planCount": 63,
+    "batch": "",
+    "sourceImage": "历史类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 211,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "历史类",
+    "majorName": "工商管理类",
+    "minScore": 445,
+    "minRank": 33174,
+    "subjectRequirement": "",
+    "planCount": 202,
+    "batch": "",
+    "sourceImage": "历史类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 212,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（软件）",
+    "minScore": 434,
+    "minRank": 99150,
+    "subjectRequirement": "",
+    "planCount": 612,
+    "batch": "",
+    "sourceImage": "物理类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 213,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（大数据与智能科学）",
+    "minScore": 425,
+    "minRank": 103219,
+    "subjectRequirement": "",
+    "planCount": 295,
+    "batch": "",
+    "sourceImage": "物理类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 214,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "大数据管理与应用",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "",
+    "planCount": 63,
+    "batch": "",
+    "sourceImage": "物理类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 215,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "计算机类（计算机与物联网）",
+    "minScore": 432,
+    "minRank": 100092,
+    "subjectRequirement": "",
+    "planCount": 217,
+    "batch": "",
+    "sourceImage": "物理类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 216,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "区块链工程",
+    "minScore": 438,
+    "minRank": 97269,
+    "subjectRequirement": "",
+    "planCount": 22,
+    "batch": "",
+    "sourceImage": "物理类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 217,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电子信息类",
+    "minScore": 425,
+    "minRank": 103219,
+    "subjectRequirement": "",
+    "planCount": 340,
+    "batch": "",
+    "sourceImage": "物理类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 218,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能电网信息工程",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "",
+    "planCount": 49,
+    "batch": "",
+    "sourceImage": "物理类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 219,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "自动化类",
+    "minScore": 446,
+    "minRank": 93312,
+    "subjectRequirement": "",
+    "planCount": 270,
+    "batch": "",
+    "sourceImage": "物理类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 220,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能制造工程",
+    "minScore": 438,
+    "minRank": 97269,
+    "subjectRequirement": "",
+    "planCount": 93,
+    "batch": "",
+    "sourceImage": "物理类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 221,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电气工程及其自动化",
+    "minScore": null,
+    "minRank": null,
+    "subjectRequirement": "",
+    "planCount": 47,
+    "batch": "",
+    "sourceImage": "物理类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "待核对：原始图片未识别到最低分和位次；新开专业或新增招生专业，暂无往年录取分数和位次",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "新开专业暂无往年录取数据"
+  },
+  {
+    "id": 222,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "智能建造",
+    "minScore": 425,
+    "minRank": 103219,
+    "subjectRequirement": "",
+    "planCount": 99,
+    "batch": "",
+    "sourceImage": "物理类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 223,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "工程造价",
+    "minScore": 425,
+    "minRank": 103219,
+    "subjectRequirement": "",
+    "planCount": 17,
+    "batch": "",
+    "sourceImage": "物理类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 224,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "土木工程",
+    "minScore": 429,
+    "minRank": 101438,
+    "subjectRequirement": "",
+    "planCount": 25,
+    "batch": "",
+    "sourceImage": "物理类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 225,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电影制作",
+    "minScore": 428,
+    "minRank": 101917,
+    "subjectRequirement": "",
+    "planCount": 103,
+    "batch": "",
+    "sourceImage": "物理类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 226,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "网络与新媒体",
+    "minScore": 458,
+    "minRank": 87032,
+    "subjectRequirement": "",
+    "planCount": 20,
+    "batch": "",
+    "sourceImage": "物理类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 227,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "电子商务",
+    "minScore": 425,
+    "minRank": 103219,
+    "subjectRequirement": "",
+    "planCount": 10,
+    "batch": "",
+    "sourceImage": "物理类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 228,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "供应链管理",
+    "minScore": 445,
+    "minRank": 93815,
+    "subjectRequirement": "",
+    "planCount": 12,
+    "batch": "",
+    "sourceImage": "物理类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 229,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "数字经济",
+    "minScore": 425,
+    "minRank": 103219,
+    "subjectRequirement": "",
+    "planCount": 98,
+    "batch": "",
+    "sourceImage": "物理类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 230,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "物理类",
+    "majorName": "工商管理类",
+    "minScore": 425,
+    "minRank": 103219,
+    "subjectRequirement": "",
+    "planCount": 10,
+    "batch": "",
+    "sourceImage": "物理类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 231,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "美术类",
+    "majorName": "设计学类",
+    "minScore": 188,
+    "minRank": 5862,
+    "subjectRequirement": "",
+    "planCount": 258,
+    "batch": "",
+    "sourceImage": "美术类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 232,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "美术类",
+    "majorName": "动画",
+    "minScore": 187,
+    "minRank": 5969,
+    "subjectRequirement": "",
+    "planCount": 123,
+    "batch": "",
+    "sourceImage": "美术类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  },
+  {
+    "id": 233,
+    "schoolName": "重庆工程学院",
+    "schoolEnglishName": "Chongqing Institute of Engineering",
+    "province": "重庆",
+    "city": "重庆",
+    "year": 2025,
+    "planYear": 2026,
+    "enrollCategory": "美术类",
+    "majorName": "环境设计",
+    "minScore": 186,
+    "minRank": 6202,
+    "subjectRequirement": "",
+    "planCount": 118,
+    "batch": "",
+    "sourceImage": "美术类的.jpg",
+    "sourceFolder": "重庆市内的",
+    "remark": "",
+    "schoolLocation": "重庆市",
+    "schoolLevel": "本科",
+    "schoolDescription": "重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。",
+    "featureMajors": [
+      "计算机类",
+      "电子信息类",
+      "自动化类",
+      "智能制造工程",
+      "网络与新媒体"
+    ],
+    "dataStatus": "可参与录取评估"
+  }
 ];
 
 let allData = [];
-let filteredData = [];
+let planFilteredData = [];
+let scoreFilteredData = [];
 
 const dom = {};
 
-document.addEventListener("DOMContentLoaded", init);
-
-async function init() {
+document.addEventListener("DOMContentLoaded", async () => {
   cacheDom();
-  allData = await loadData();
-  filteredData = [...allData];
-  initSelects();
+  await loadData();
+  initPage();
   bindEvents();
-  renderStats();
-  renderPlanTable(filteredData);
-  renderScoreTable(filteredData);
-}
+});
 
 function cacheDom() {
   [
-    "provinceSelect", "yearSelect", "planYearSelect", "categorySelect", "scoreInput", "rankInput",
-    "subjectSelect", "majorKeyword", "searchBtn", "recommendBtn", "chanceBtn", "planTableBody",
-    "scoreProvince", "scoreYear", "scoreCategory", "scoreMajor", "minScoreFilter", "maxScoreFilter",
-    "minRankFilter", "maxRankFilter", "scoreSearchBtn", "scoreResetBtn", "scoreTableBody",
-    "recommendResults", "chanceProvince", "chanceYear", "chancePlanYear", "chanceCategory",
-    "chanceScore", "chanceRank", "chanceSubject", "chanceMajor", "chanceSubmitBtn", "chanceResults",
-    "provinceCount", "majorCount", "scoreLineCount", "planTotal"
-  ].forEach(id => {
+    "provinceSelect",
+    "yearSelect",
+    "planYearSelect",
+    "categorySelect",
+    "scoreInput",
+    "rankInput",
+    "subjectSelect",
+    "majorKeyword",
+    "searchBtn",
+    "recommendBtn",
+    "chanceBtn",
+    "provinceCount",
+    "majorCount",
+    "scoreLineCount",
+    "planTotal",
+    "planTableBody",
+    "scoreProvince",
+    "scoreYear",
+    "scoreCategory",
+    "scoreMajor",
+    "minScoreFilter",
+    "maxScoreFilter",
+    "minRankFilter",
+    "maxRankFilter",
+    "scoreSearchBtn",
+    "scoreResetBtn",
+    "scoreTableBody",
+    "recommendResults",
+    "chanceProvince",
+    "chanceYear",
+    "chancePlanYear",
+    "chanceCategory",
+    "chanceScore",
+    "chanceRank",
+    "chanceSubject",
+    "chanceMajor",
+    "chanceSubmitBtn",
+    "chanceResults",
+  ].forEach((id) => {
     dom[id] = document.getElementById(id);
   });
 }
 
-/* 优先读取 data/data.json；file:// 读取失败时使用 fallbackData。 */
 async function loadData() {
   try {
-    const response = await fetch("data/data.json");
-    if (!response.ok) throw new Error("data.json 读取失败");
-    return await response.json();
+    const response = await fetch("data/data.json", { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    allData = await response.json();
   } catch (error) {
-    console.warn("已使用内置模拟数据：", error.message);
-    return fallbackData;
+    allData = Array.isArray(fallbackData) ? fallbackData : [];
+    console.warn("未能读取 data/data.json，已使用内置兜底数据。", error);
   }
+
+  allData = allData.map((item, index) => ({
+    ...item,
+    id: item.id || index + 1,
+    year: toNumberOrNull(item.year),
+    planYear: toNumberOrNull(item.planYear),
+    minScore: toNumberOrNull(item.minScore),
+    minRank: toNumberOrNull(item.minRank),
+    planCount: toNumberOrNull(item.planCount),
+  }));
+
+  planFilteredData = [...allData];
+  scoreFilteredData = [...allData];
+}
+
+function initPage() {
+  initSelects();
+  renderStats();
+  renderPlanTable(planFilteredData);
+  renderScoreTable(scoreFilteredData);
+}
+
+function initSelects() {
+  const provinces = uniqueValues(allData.map((item) => item.province));
+  const years = uniqueValues(allData.map((item) => item.year)).sort((a, b) => b - a);
+  const planYears = uniqueValues(allData.map((item) => item.planYear)).sort((a, b) => b - a);
+  const categories = uniqueValues(allData.map((item) => item.enrollCategory));
+  const subjects = uniqueValues(allData.map((item) => item.subjectRequirement));
+
+  fillSelect(dom.provinceSelect, provinces, "全部省份");
+  fillSelect(dom.yearSelect, years, "全部年份");
+  fillSelect(dom.planYearSelect, planYears, "全部计划年份");
+  fillSelect(dom.categorySelect, categories, "全部类别");
+  fillSelect(dom.subjectSelect, subjects, "全部选科要求");
+
+  fillSelect(dom.scoreProvince, provinces, "全部省份");
+  fillSelect(dom.scoreYear, years, "全部年份");
+  fillSelect(dom.scoreCategory, categories, "全部类别");
+
+  fillSelect(dom.chanceProvince, provinces, "全部省份");
+  fillSelect(dom.chanceYear, years, "全部年份");
+  fillSelect(dom.chancePlanYear, planYears, "全部计划年份");
+  fillSelect(dom.chanceCategory, categories, "全部类别");
+  fillSelect(dom.chanceSubject, subjects, "全部选科要求");
 }
 
 function bindEvents() {
-  dom.searchBtn.addEventListener("click", handleMainSearch);
+  dom.searchBtn.addEventListener("click", handlePlanSearch);
   dom.recommendBtn.addEventListener("click", handleRecommend);
   dom.chanceBtn.addEventListener("click", () => {
     copyMainInputsToChance();
@@ -68,348 +7120,337 @@ function bindEvents() {
   dom.chanceSubmitBtn.addEventListener("click", handleChance);
 }
 
-function initSelects() {
-  const provinces = unique(allData.map(item => item.province));
-  const years = unique(allData.map(item => item.year)).sort((a, b) => b - a);
-  const planYears = unique(allData.map(item => item.planYear)).sort((a, b) => b - a);
-  const categories = unique(allData.map(item => item.enrollCategory));
-  const subjects = unique(allData.map(item => item.subjectRequirement));
-
-  fillSelect(dom.provinceSelect, provinces);
-  fillSelect(dom.yearSelect, years);
-  fillSelect(dom.planYearSelect, planYears);
-  fillSelect(dom.categorySelect, categories);
-  fillSelect(dom.subjectSelect, subjects, "全部");
-
-  fillSelect(dom.scoreProvince, provinces, "全部");
-  fillSelect(dom.scoreYear, years, "全部");
-  fillSelect(dom.scoreCategory, categories, "全部");
-
-  fillSelect(dom.chanceProvince, provinces);
-  fillSelect(dom.chanceYear, years);
-  fillSelect(dom.chancePlanYear, planYears);
-  fillSelect(dom.chanceCategory, categories);
-  fillSelect(dom.chanceSubject, subjects, "全部");
-}
-
-function fillSelect(select, values, firstText) {
-  select.innerHTML = "";
-  if (firstText) {
-    select.appendChild(new Option(firstText, ""));
-  }
-  values.forEach(value => {
-    select.appendChild(new Option(value, value));
-  });
-}
-
-function unique(values) {
-  return [...new Set(values)];
-}
-
-function renderStats() {
-  dom.provinceCount.textContent = unique(allData.map(item => item.province)).length;
-  dom.majorCount.textContent = unique(allData.map(item => item.majorName)).length;
-  dom.scoreLineCount.textContent = allData.filter(item => item.minScore !== null && item.minRank !== null).length;
-  dom.planTotal.textContent = allData.reduce((sum, item) => sum + Number(item.planCount || 0), 0);
-}
-
-function handleMainSearch() {
-  filteredData = getMainFilteredData();
-  renderPlanTable(filteredData);
-  renderScoreTable(filteredData);
-  document.getElementById("plan").scrollIntoView({ behavior: "smooth" });
-}
-
-function getMainFilteredData() {
-  return allData.filter(item => {
-    return matches(item.province, dom.provinceSelect.value) &&
-      matches(String(item.year), dom.yearSelect.value) &&
-      matches(String(item.planYear), dom.planYearSelect.value) &&
-      matches(item.enrollCategory, dom.categorySelect.value) &&
-      matches(item.subjectRequirement, dom.subjectSelect.value) &&
-      includesText(item.majorName, dom.majorKeyword.value);
-  });
+function handlePlanSearch() {
+  planFilteredData = getMainFilteredData();
+  renderPlanTable(planFilteredData);
 }
 
 function handleScoreSearch() {
-  const list = allData.filter(item => {
-    return matches(item.province, dom.scoreProvince.value) &&
-      matches(String(item.year), dom.scoreYear.value) &&
-      matches(item.enrollCategory, dom.scoreCategory.value) &&
-      includesText(item.majorName, dom.scoreMajor.value) &&
-      inNumberRange(item.minScore, dom.minScoreFilter.value, dom.maxScoreFilter.value) &&
-      inNumberRange(item.minRank, dom.minRankFilter.value, dom.maxRankFilter.value);
+  const province = dom.scoreProvince.value;
+  const year = dom.scoreYear.value;
+  const category = dom.scoreCategory.value;
+  const keyword = dom.scoreMajor.value.trim();
+  const minScore = toNumberOrNull(dom.minScoreFilter.value);
+  const maxScore = toNumberOrNull(dom.maxScoreFilter.value);
+  const minRank = toNumberOrNull(dom.minRankFilter.value);
+  const maxRank = toNumberOrNull(dom.maxRankFilter.value);
+
+  scoreFilteredData = allData.filter((item) => {
+    return (
+      matchText(item.province, province) &&
+      matchText(String(item.year || ""), year) &&
+      matchText(item.enrollCategory, category) &&
+      matchKeyword(item.majorName, keyword) &&
+      matchNumberRange(item.minScore, minScore, maxScore) &&
+      matchNumberRange(item.minRank, minRank, maxRank)
+    );
   });
-  renderScoreTable(list);
+
+  renderScoreTable(scoreFilteredData);
 }
 
 function resetScoreFilters() {
-  dom.scoreProvince.value = "";
-  dom.scoreYear.value = "";
-  dom.scoreCategory.value = "";
-  dom.scoreMajor.value = "";
-  dom.minScoreFilter.value = "";
-  dom.maxScoreFilter.value = "";
-  dom.minRankFilter.value = "";
-  dom.maxRankFilter.value = "";
-  renderScoreTable(allData);
+  [
+    dom.scoreProvince,
+    dom.scoreYear,
+    dom.scoreCategory,
+    dom.scoreMajor,
+    dom.minScoreFilter,
+    dom.maxScoreFilter,
+    dom.minRankFilter,
+    dom.maxRankFilter,
+  ].forEach((field) => {
+    field.value = "";
+  });
+  scoreFilteredData = [...allData];
+  renderScoreTable(scoreFilteredData);
 }
 
-function matches(value, condition) {
-  return !condition || String(value) === String(condition);
-}
+function getMainFilteredData() {
+  const province = dom.provinceSelect.value;
+  const year = dom.yearSelect.value;
+  const planYear = dom.planYearSelect.value;
+  const category = dom.categorySelect.value;
+  const subject = dom.subjectSelect.value;
+  const keyword = dom.majorKeyword.value.trim();
 
-function includesText(value, keyword) {
-  return !keyword.trim() || value.includes(keyword.trim());
-}
-
-function inNumberRange(value, minValue, maxValue) {
-  if (value === null || value === undefined) return !minValue && !maxValue;
-  const min = minValue === "" ? -Infinity : Number(minValue);
-  const max = maxValue === "" ? Infinity : Number(maxValue);
-  return Number(value) >= min && Number(value) <= max;
-}
-
-function renderPlanTable(list) {
-  if (!list.length) {
-    dom.planTableBody.innerHTML = emptyRow(7);
-    return;
-  }
-
-  dom.planTableBody.innerHTML = list.map((item, index) => `
-    <tr>
-      <td>${index + 1}</td>
-      <td>${item.enrollCategory}</td>
-      <td>${item.majorName}</td>
-      <td>${displayValue(item.minScore)}</td>
-      <td>${displayValue(item.minRank)}</td>
-      <td>${item.subjectRequirement}</td>
-      <td>${item.planCount}</td>
-    </tr>
-  `).join("");
-}
-
-function renderScoreTable(list) {
-  if (!list.length) {
-    dom.scoreTableBody.innerHTML = emptyRow(9);
-    return;
-  }
-
-  dom.scoreTableBody.innerHTML = list.map(item => `
-    <tr>
-      <td>${item.schoolName}</td>
-      <td>${item.province}</td>
-      <td>${item.year}</td>
-      <td>${item.enrollCategory}</td>
-      <td>${item.majorName}</td>
-      <td>${displayValue(item.minScore)}</td>
-      <td>${displayValue(item.minRank)}</td>
-      <td>${item.subjectRequirement}</td>
-      <td>${item.planCount}</td>
-    </tr>
-  `).join("");
-}
-
-function emptyRow(colspan) {
-  return `<tr class="empty-row"><td colspan="${colspan}">暂无匹配数据</td></tr>`;
-}
-
-function displayValue(value) {
-  return value === null || value === undefined ? "—" : value;
+  return allData.filter((item) => {
+    return (
+      matchText(item.province, province) &&
+      matchText(String(item.year || ""), year) &&
+      matchText(String(item.planYear || ""), planYear) &&
+      matchText(item.enrollCategory, category) &&
+      matchText(item.subjectRequirement, subject) &&
+      matchKeyword(item.majorName, keyword)
+    );
+  });
 }
 
 function handleRecommend() {
-  const userScore = Number(dom.scoreInput.value);
-  const userRank = Number(dom.rankInput.value);
-  if (!userScore && !userRank) {
-    dom.recommendResults.className = "empty-box";
-    dom.recommendResults.textContent = "请先输入高考分数或全省位次。";
-    document.getElementById("recommend").scrollIntoView({ behavior: "smooth" });
+  const userScore = toNumberOrNull(dom.scoreInput.value);
+  const userRank = toNumberOrNull(dom.rankInput.value);
+
+  if (userScore === null && userRank === null) {
+    dom.recommendResults.innerHTML = `<div class="empty-box">请至少输入高考分数或位次后再查询。</div>`;
     return;
   }
 
-  const results = getMainFilteredData()
-    .filter(item => item.minScore !== null && item.minRank !== null)
-    .map(item => {
-      const chance = calculateAdmissionChance(item, userScore, userRank);
-      return {
-        ...item,
-        chance,
-        recommendType: getRecommendType(item, userScore, userRank)
-      };
-    })
-    .filter(item => item.recommendType)
-    .sort((a, b) => b.chance.percent - a.chance.percent);
+  const baseList = getMainFilteredData();
+  const normalResults = baseList
+    .filter((item) => hasHistoricalData(item))
+    .map((item) => ({
+      ...item,
+      recommendType: getRecommendType(item, userScore, userRank),
+    }))
+    .filter((item) => item.recommendType)
+    .sort(sortRecommendResult);
 
-  renderRecommendCards(results, userScore, userRank);
+  const newMajorList = baseList.filter((item) => isNewMajor(item));
+  renderRecommendCards(normalResults, newMajorList, userScore, userRank);
   document.getElementById("recommend").scrollIntoView({ behavior: "smooth" });
 }
 
-/* 推荐类型判断：位次优先，位次数字越小代表排名越靠前。 */
-function getRecommendType(item, userScore, userRank) {
-  if (item.minScore === null || item.minRank === null) return "";
+function handleChance() {
+  const userScore = toNumberOrNull(dom.chanceScore.value);
+  const userRank = toNumberOrNull(dom.chanceRank.value);
 
-  if (userRank) {
-    const rankGap = item.minRank - userRank;
-    if (rankGap >= 5000) return "保一保";
-    if (rankGap >= -1000) return "稳一稳";
-    if (rankGap >= -5000) return "冲一冲";
+  if (userScore === null && userRank === null) {
+    dom.chanceResults.innerHTML = `<div class="empty-box">请至少输入高考分数或位次后再评估。</div>`;
+    return;
+  }
+
+  const province = dom.chanceProvince.value;
+  const year = dom.chanceYear.value;
+  const planYear = dom.chancePlanYear.value;
+  const category = dom.chanceCategory.value;
+  const subject = dom.chanceSubject.value;
+  const keyword = dom.chanceMajor.value.trim();
+
+  const results = allData
+    .filter((item) => {
+      return (
+        matchText(item.province, province) &&
+        matchText(String(item.year || ""), year) &&
+        matchText(String(item.planYear || ""), planYear) &&
+        matchText(item.enrollCategory, category) &&
+        matchText(item.subjectRequirement, subject) &&
+        matchKeyword(item.majorName, keyword)
+      );
+    })
+    .map((item) => ({
+      ...item,
+      chance: calculateAdmissionChance(item, userScore, userRank),
+    }))
+    .sort((a, b) => (b.chance.percent ?? -1) - (a.chance.percent ?? -1));
+
+  renderChanceCards(results, userScore, userRank);
+}
+
+function getRecommendType(item, userScore, userRank) {
+  // 位次越小表示排名越靠前，因此优先使用位次判断推荐类型。
+  if (userRank !== null && item.minRank !== null) {
+    const diff = item.minRank - userRank;
+    if (diff >= 5000) return "保一保";
+    if (diff >= -3000) return "稳一稳";
+    if (diff >= -10000) return "冲一冲";
     return "";
   }
 
-  if (!userScore) return "";
-  const scoreGap = userScore - item.minScore;
-  if (scoreGap >= 20) return "保一保";
-  if (scoreGap >= 0) return "稳一稳";
-  if (scoreGap >= -10) return "冲一冲";
+  if (userScore !== null && item.minScore !== null) {
+    const diff = userScore - item.minScore;
+    if (diff >= 30) return "保一保";
+    if (diff >= -10) return "稳一稳";
+    if (diff >= -25) return "冲一冲";
+  }
+
   return "";
 }
 
-/* 录取几率计算：当前为演示算法，后续真实数据加入后可继续复用。 */
 function calculateAdmissionChance(item, userScore, userRank) {
-  if (item.minScore === null || item.minRank === null) {
+  if (!hasHistoricalData(item)) {
     return {
       percent: null,
-      riskLevel: "无法评估",
-      advice: "暂无历史录取数据，无法评估录取几率。",
-      scoreGap: null,
-      rankGap: null
+      level: "暂无往年数据",
+      reason: "该专业为新开或新增招生专业，暂无历史最低分和最低位次，建议结合招生计划、选科要求和学校招生章程人工判断。",
     };
   }
 
-  let percent = 5;
-  let riskLevel = "风险很高";
-  let advice = "谨慎填报";
-  const scoreGap = userScore ? userScore - item.minScore : null;
-  const rankGap = userRank ? item.minRank - userRank : null;
-
-  if (userRank) {
-    if (userRank <= item.minRank - 5000) {
-      percent = 90; riskLevel = "较稳"; advice = "保一保";
-    } else if (userRank <= item.minRank - 1000) {
-      percent = 80; riskLevel = "比较稳"; advice = "稳一稳";
-    } else if (userRank <= item.minRank + 1000) {
-      percent = 65; riskLevel = "有一定机会"; advice = "稳中带冲";
-    } else if (userRank <= item.minRank + 5000) {
-      percent = 42; riskLevel = "风险较高"; advice = "冲一冲";
-    } else {
-      percent = 18; riskLevel = "风险很高"; advice = "谨慎填报";
-    }
-  } else if (userScore) {
-    if (scoreGap >= 20) {
-      percent = 90; riskLevel = "较稳"; advice = "保一保";
-    } else if (scoreGap >= 10) {
-      percent = 80; riskLevel = "比较稳"; advice = "稳一稳";
-    } else if (scoreGap >= 0) {
-      percent = 65; riskLevel = "有一定机会"; advice = "稳中带冲";
-    } else if (scoreGap >= -10) {
-      percent = 42; riskLevel = "风险较高"; advice = "冲一冲";
-    } else {
-      percent = 18; riskLevel = "风险很高"; advice = "谨慎填报";
-    }
+  if (userRank !== null && item.minRank !== null) {
+    const diff = item.minRank - userRank;
+    if (diff >= 12000) return chanceResult(90, "较高", "你的位次明显优于往年最低位次。");
+    if (diff >= 5000) return chanceResult(78, "偏高", "你的位次优于往年最低位次，可作为保底或稳妥选择。");
+    if (diff >= -3000) return chanceResult(60, "中等", "你的位次接近往年最低位次，需要结合当年计划变化判断。");
+    if (diff >= -10000) return chanceResult(35, "偏低", "你的位次略低于往年最低位次，可作为冲刺选择。");
+    return chanceResult(15, "较低", "你的位次与往年最低位次差距较大，风险较高。");
   }
 
-  if (item.planCount >= 5) percent += 3;
-  if (item.planCount <= 2) percent -= 3;
-  percent = Math.max(5, Math.min(95, percent));
+  if (userScore !== null && item.minScore !== null) {
+    const diff = userScore - item.minScore;
+    if (diff >= 45) return chanceResult(88, "较高", "你的分数明显高于往年最低分。");
+    if (diff >= 20) return chanceResult(76, "偏高", "你的分数高于往年最低分，可作为稳妥选择。");
+    if (diff >= -10) return chanceResult(58, "中等", "你的分数接近往年最低分，需要谨慎参考。");
+    if (diff >= -25) return chanceResult(34, "偏低", "你的分数略低于往年最低分，可作为冲刺选择。");
+    return chanceResult(12, "较低", "你的分数与往年最低分差距较大，风险较高。");
+  }
 
-  return { percent, riskLevel, advice, scoreGap, rankGap };
+  return chanceResult(0, "无法评估", "缺少可对比的分数或位次。");
 }
 
-function renderRecommendCards(results, userScore, userRank) {
+function chanceResult(percent, level, reason) {
+  return { percent, level, reason };
+}
+
+function renderStats() {
+  dom.provinceCount.textContent = uniqueValues(allData.map((item) => item.province)).length;
+  dom.majorCount.textContent = uniqueValues(allData.map((item) => item.majorName)).length;
+  dom.scoreLineCount.textContent = allData.filter((item) => hasHistoricalData(item)).length;
+  dom.planTotal.textContent = allData.reduce((sum, item) => sum + (item.planCount || 0), 0);
+}
+
+function renderPlanTable(data) {
+  if (!data.length) {
+    dom.planTableBody.innerHTML = `<tr><td colspan="9">暂无符合条件的数据。</td></tr>`;
+    return;
+  }
+
+  dom.planTableBody.innerHTML = data
+    .map(
+      (item) => `
+        <tr>
+          <td>${escapeHtml(item.province)}</td>
+          <td>${escapeHtml(item.enrollCategory)}</td>
+          <td>${escapeHtml(item.majorName)}${statusBadge(item)}</td>
+          <td>${formatValue(item.year)}</td>
+          <td>${formatValue(item.minScore)}</td>
+          <td>${formatValue(item.minRank)}</td>
+          <td>${escapeHtml(item.subjectRequirement || "不限")}</td>
+          <td>${formatValue(item.planCount)}</td>
+          <td>${escapeHtml(item.batch || "")}</td>
+        </tr>
+      `
+    )
+    .join("");
+}
+
+function renderScoreTable(data) {
+  if (!data.length) {
+    dom.scoreTableBody.innerHTML = `<tr><td colspan="9">暂无符合条件的数据。</td></tr>`;
+    return;
+  }
+
+  dom.scoreTableBody.innerHTML = data
+    .map(
+      (item) => `
+        <tr>
+          <td>${escapeHtml(item.province)}</td>
+          <td>${escapeHtml(item.enrollCategory)}</td>
+          <td>${escapeHtml(item.majorName)}</td>
+          <td>${formatValue(item.year)}</td>
+          <td>${formatValue(item.minScore)}</td>
+          <td>${formatValue(item.minRank)}</td>
+          <td>${escapeHtml(item.subjectRequirement || "不限")}</td>
+          <td>${formatValue(item.planCount)}</td>
+          <td>${statusText(item)}</td>
+        </tr>
+      `
+    )
+    .join("");
+}
+
+function renderRecommendCards(results, newMajorList, userScore, userRank) {
+  if (!results.length && !newMajorList.length) {
+    dom.recommendResults.innerHTML = `<div class="empty-box">没有找到符合当前条件的推荐结果，请调整省份、类别或专业关键词。</div>`;
+    return;
+  }
+
+  const normalHtml = results.length
+    ? `
+      <div class="recommend-blocks">
+        <h3 class="group-title">可参考往年录取数据的专业</h3>
+        <div class="card-grid">${results.map((item) => resultCardTemplate(item, userScore, userRank, item.recommendType)).join("")}</div>
+      </div>
+    `
+    : "";
+
+  const newHtml = newMajorList.length
+    ? `
+      <div class="recommend-blocks">
+        <h3 class="group-title">新开专业 / 暂无往年录取数据</h3>
+        <div class="card-grid">${newMajorList.map((item) => newMajorCardTemplate(item)).join("")}</div>
+      </div>
+    `
+    : "";
+
+  const artTip = hasArtCategory([...results, ...newMajorList])
+    ? `<p class="notice small">美术类录取通常还需结合专业成绩、综合分规则和招生章程，本系统只做页面功能展示。</p>`
+    : "";
+
+  dom.recommendResults.innerHTML = normalHtml + newHtml + artTip;
+}
+
+function renderChanceCards(results, userScore, userRank) {
   if (!results.length) {
-    dom.recommendResults.className = "empty-box";
-    dom.recommendResults.textContent = "暂无可推荐结果。";
+    dom.chanceResults.innerHTML = `<div class="empty-box">没有找到符合当前条件的专业。</div>`;
     return;
   }
 
-  dom.recommendResults.className = "card-grid";
-  dom.recommendResults.innerHTML = results.map(item => resultCardTemplate(item, userScore, userRank, true)).join("");
+  const cards = results.map((item) => resultCardTemplate(item, userScore, userRank)).join("");
+  const artTip = hasArtCategory(results)
+    ? `<p class="notice small">美术类录取通常还需结合专业成绩、综合分规则和招生章程，本系统只做页面功能展示。</p>`
+    : "";
+  dom.chanceResults.innerHTML = `<div class="card-grid">${cards}</div>${artTip}`;
 }
 
-function handleChance() {
-  const userScore = Number(dom.chanceScore.value);
-  const userRank = Number(dom.chanceRank.value);
-  if (!userScore && !userRank) {
-    dom.chanceResults.className = "empty-box";
-    dom.chanceResults.textContent = "请至少输入高考分数或全省位次。";
-    return;
-  }
-
-  const list = allData.filter(item => {
-    return matches(item.province, dom.chanceProvince.value) &&
-      matches(String(item.year), dom.chanceYear.value) &&
-      matches(String(item.planYear), dom.chancePlanYear.value) &&
-      matches(item.enrollCategory, dom.chanceCategory.value) &&
-      matches(item.subjectRequirement, dom.chanceSubject.value) &&
-      includesText(item.majorName, dom.chanceMajor.value);
-  }).map(item => ({
-    ...item,
-    chance: calculateAdmissionChance(item, userScore, userRank)
-  })).sort((a, b) => (b.chance.percent || 0) - (a.chance.percent || 0));
-
-  renderChanceCards(list, userScore, userRank);
-}
-
-function renderChanceCards(list, userScore, userRank) {
-  if (!list.length) {
-    dom.chanceResults.className = "empty-box";
-    dom.chanceResults.textContent = "暂无匹配数据";
-    return;
-  }
-
-  dom.chanceResults.className = "card-grid";
-  dom.chanceResults.innerHTML = list.map(item => resultCardTemplate(item, userScore, userRank, false)).join("");
-}
-
-function resultCardTemplate(item, userScore, userRank, isRecommend) {
-  const chance = item.chance;
-  const tagText = isRecommend ? item.recommendType : chance.advice;
-  const percentHtml = chance.percent === null
-    ? `<p class="risk-text">暂无历史录取数据，无法评估录取几率。</p>`
-    : `
-      <p><strong>预计录取几率：</strong>${chance.percent}%</p>
-      <div class="progress"><span class="${progressColor(chance.percent)}" style="width:${chance.percent}%"></span></div>
-      <p><strong>风险等级：</strong><span class="risk-text">${chance.riskLevel}</span></p>
-      <p><strong>建议类型：</strong>${chance.advice}</p>
-    `;
+function resultCardTemplate(item, userScore, userRank, recommendType = "") {
+  const chance = item.chance || calculateAdmissionChance(item, userScore, userRank);
+  const percentHtml =
+    chance.percent === null
+      ? `<p class="chance-empty">暂无历史数据，无法估算录取几率。</p>`
+      : `<div class="chance-bar"><span style="width:${chance.percent}%"></span></div><strong>${chance.percent}%</strong>`;
 
   return `
     <article class="result-card">
-      <span class="tag ${tagClass(tagText)}">${tagText}</span>
-      <h3>${item.majorName}</h3>
-      <p><strong>招生类别：</strong>${item.enrollCategory}</p>
-      <p><strong>2025最低分：</strong>${displayValue(item.minScore)}</p>
-      <p><strong>2025最低位次：</strong>${displayValue(item.minRank)}</p>
-      <p><strong>2026招生人数：</strong>${item.planCount}</p>
-      <p><strong>选科要求：</strong>${item.subjectRequirement}</p>
-      <p><strong>你的分数：</strong>${userScore || "未填写"}</p>
-      <p><strong>你的位次：</strong>${userRank || "未填写"}</p>
-      <p><strong>分数差：</strong>${displayGap(chance.scoreGap)}</p>
-      <p><strong>位次差：</strong>${displayGap(chance.rankGap)}</p>
-      ${percentHtml}
-      <div class="result-warning">该概率为模拟算法估算结果，仅供功能展示，不代表真实录取结果。</div>
+      <div class="result-head">
+        <h3>${escapeHtml(item.majorName)}</h3>
+        ${recommendType ? `<span class="tag ${tagClass(recommendType)}">${recommendType}</span>` : statusBadge(item)}
+      </div>
+      <p>${escapeHtml(item.schoolName)} · ${escapeHtml(item.province)} · ${escapeHtml(item.enrollCategory)}</p>
+      <ul>
+        <li>年份：${formatValue(item.year)}</li>
+        <li>最低分：${formatValue(item.minScore)}</li>
+        <li>最低位次：${formatValue(item.minRank)}</li>
+        <li>选科要求：${escapeHtml(item.subjectRequirement || "不限")}</li>
+        <li>2026计划：${formatValue(item.planCount)}人</li>
+      </ul>
+      <div class="chance-info">
+        ${percentHtml}
+        <p><b>${escapeHtml(chance.level)}</b>：${escapeHtml(chance.reason)}</p>
+      </div>
     </article>
   `;
 }
 
-function tagClass(text) {
-  if (text === "保一保") return "tag-safe";
-  if (text === "稳一稳" || text === "稳中带冲") return "tag-stable";
-  if (text === "冲一冲") return "tag-rush";
-  return "tag-middle";
-}
-
-function progressColor(percent) {
-  if (percent >= 80) return "bar-green";
-  if (percent >= 60) return "bar-blue";
-  if (percent >= 40) return "bar-orange";
-  return "bar-red";
-}
-
-function displayGap(value) {
-  if (value === null || value === undefined) return "—";
-  return value > 0 ? `+${value}` : String(value);
+function newMajorCardTemplate(item) {
+  return `
+    <article class="result-card">
+      <div class="result-head">
+        <h3>${escapeHtml(item.majorName)}</h3>
+        <span class="tag tag-new">新开专业</span>
+      </div>
+      <p>${escapeHtml(item.schoolName)} · ${escapeHtml(item.province)} · ${escapeHtml(item.enrollCategory)}</p>
+      <ul>
+        <li>年份：${formatValue(item.year)}</li>
+        <li>最低分：暂无</li>
+        <li>最低位次：暂无</li>
+        <li>选科要求：${escapeHtml(item.subjectRequirement || "不限")}</li>
+        <li>2026计划：${formatValue(item.planCount)}人</li>
+      </ul>
+      <div class="chance-info">
+        <p class="chance-empty">暂无往年录取分数和位次，不能按历史数据估算录取几率。</p>
+        <p>${escapeHtml(item.remark || "建议结合招生计划、选科要求和学校招生章程人工判断。")}</p>
+      </div>
+    </article>
+  `;
 }
 
 function copyMainInputsToChance() {
@@ -421,4 +7462,92 @@ function copyMainInputsToChance() {
   dom.chanceRank.value = dom.rankInput.value;
   dom.chanceSubject.value = dom.subjectSelect.value;
   dom.chanceMajor.value = dom.majorKeyword.value;
+}
+
+function hasHistoricalData(item) {
+  return item.minScore !== null || item.minRank !== null;
+}
+
+function isNewMajor(item) {
+  return item.minScore === null && item.minRank === null;
+}
+
+function statusBadge(item) {
+  if (!isNewMajor(item)) {
+    return `<span class="status-badge status-normal">有往年数据</span>`;
+  }
+  return `<span class="status-badge tag-new">暂无往年数据</span>`;
+}
+
+function statusText(item) {
+  return isNewMajor(item)
+    ? `<span class="status-badge tag-new">新开专业暂无往年录取数据</span>`
+    : `<span class="status-badge status-normal">可参考</span>`;
+}
+
+function sortRecommendResult(a, b) {
+  const order = { "保一保": 1, "稳一稳": 2, "冲一冲": 3 };
+  return (order[a.recommendType] || 9) - (order[b.recommendType] || 9);
+}
+
+function hasArtCategory(list) {
+  return list.some((item) => String(item.enrollCategory || "").includes("美术"));
+}
+
+function tagClass(type) {
+  if (type === "保一保") return "tag-safe";
+  if (type === "稳一稳") return "tag-stable";
+  return "tag-chance";
+}
+
+function fillSelect(select, values, defaultText) {
+  select.innerHTML = `<option value="">${defaultText}</option>`;
+  values.forEach((value) => {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = value;
+    select.appendChild(option);
+  });
+}
+
+function uniqueValues(values) {
+  return [...new Set(values.filter((value) => value !== null && value !== undefined && String(value).trim() !== ""))];
+}
+
+function matchText(actual, expected) {
+  return !expected || String(actual || "") === String(expected);
+}
+
+function matchKeyword(actual, keyword) {
+  return !keyword || String(actual || "").includes(keyword);
+}
+
+function matchNumberRange(value, min, max) {
+  if (value === null) {
+    return min === null && max === null;
+  }
+  if (min !== null && value < min) return false;
+  if (max !== null && value > max) return false;
+  return true;
+}
+
+function toNumberOrNull(value) {
+  if (value === null || value === undefined || value === "") {
+    return null;
+  }
+  const number = Number(String(value).replace(/,/g, ""));
+  return Number.isFinite(number) ? number : null;
+}
+
+function formatValue(value) {
+  return value === null || value === undefined || value === "" ? "" : value;
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }

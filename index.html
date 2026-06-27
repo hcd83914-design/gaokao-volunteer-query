@@ -3,131 +3,188 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>重庆工程学院招生计划与录取分数查询系统</title>
+  <title>重庆工程学院录取可能性评估与专业填报参考系统</title>
+  <link rel="icon" href="data:,">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header class="site-header" id="home">
     <nav class="top-nav" aria-label="主导航">
-      <a href="#home">首页</a>
+      <a href="#home">录取评估</a>
+      <a href="#assessment">评估结果</a>
+      <a href="#recommend">推荐专业</a>
       <a href="#plan">招生计划</a>
       <a href="#scores">录取分数</a>
-      <a href="#recommend">智能推荐</a>
-      <a href="#chance">录取几率评估</a>
       <a href="#about">院校介绍</a>
       <a href="#data-note">数据说明</a>
     </nav>
 
     <div class="hero">
-      <div class="building-line" aria-hidden="true">
-        <span></span><span></span><span></span><span></span><span></span>
-      </div>
       <p class="school-en">Chongqing Institute of Engineering</p>
-      <h1>重庆工程学院</h1>
-      <h2>招生计划与录取分数查询系统</h2>
-      <p class="hero-text">面向考生的招生计划、录取分数、专业推荐与录取几率静态查询原型。</p>
+      <h1>重庆工程学院录取可能性评估与专业填报参考系统</h1>
+      <p class="hero-text">输入你的分数、位次和科类，快速判断报考重庆工程学院的参考机会，并查看适合填报的专业。</p>
+      <p class="hero-note">本系统结果仅供参考，正式填报请以各省考试院和重庆工程学院官方公布信息为准。</p>
+
+      <section class="query-card" aria-labelledby="queryTitle">
+        <div class="section-title compact">
+          <span class="title-mark"></span>
+          <div>
+            <h2 id="queryTitle">先判断：我适合报哪些专业？</h2>
+            <p>位次比单纯分数更有参考价值，建议优先填写全省位次。</p>
+          </div>
+        </div>
+
+        <form id="mainQueryForm" class="form-grid">
+          <div class="field">
+            <label for="provinceSelect">考生省份</label>
+            <select id="provinceSelect"></select>
+          </div>
+          <div class="field">
+            <label for="categorySelect">招生类别 / 科类</label>
+            <select id="categorySelect"></select>
+          </div>
+          <div class="field">
+            <label for="scoreInput">高考分数</label>
+            <input id="scoreInput" type="number" min="0" max="750" placeholder="例如：520">
+          </div>
+          <div class="field">
+            <label for="rankInput">全省位次</label>
+            <input id="rankInput" type="number" min="1" placeholder="例如：32000">
+          </div>
+          <div class="field">
+            <label for="subjectSelect">选科要求</label>
+            <select id="subjectSelect"></select>
+          </div>
+          <div class="field">
+            <label for="majorKeyword">意向专业（可选）</label>
+            <input id="majorKeyword" type="search" list="majorList" placeholder="例如：计算机">
+            <datalist id="majorList"></datalist>
+          </div>
+          <div class="field optional-field">
+            <label for="yearSelect">录取年份</label>
+            <select id="yearSelect"></select>
+          </div>
+          <div class="field optional-field">
+            <label for="planYearSelect">计划年份</label>
+            <select id="planYearSelect"></select>
+          </div>
+          <div class="button-group">
+            <button type="button" id="chanceBtn">开始评估录取可能性</button>
+            <button type="button" id="recommendBtn" class="btn-mid">查看推荐专业</button>
+            <button type="button" id="searchBtn" class="btn-light">查看招生计划</button>
+          </div>
+        </form>
+      </section>
     </div>
   </header>
 
   <main class="page">
-    <section class="notice">
-      <strong>免责声明：</strong>本系统数据根据用户提供的招生计划和录取分数资料整理，仅供信息查询和功能展示使用。录取几率为系统根据历史分数、位次和招生计划进行的规则化估算，不代表真实录取结果。真实志愿填报请以各省考试院和重庆工程学院官方公布信息为准。
-    </section>
-
-    <section class="panel query-panel" aria-labelledby="queryTitle">
-      <div class="section-title">
-        <span class="title-mark"></span>
-        <div>
-          <h2 id="queryTitle">首页查询面板</h2>
-          <p>输入分数、位次和专业关键词，可筛选招生计划、生成智能推荐或评估录取几率。</p>
-        </div>
-      </div>
-
-      <form id="mainQueryForm" class="form-grid">
-        <div class="field">
-          <label for="provinceSelect">省份选择</label>
-          <select id="provinceSelect"></select>
-        </div>
-        <div class="field">
-          <label for="yearSelect">年份选择</label>
-          <select id="yearSelect"></select>
-        </div>
-        <div class="field">
-          <label for="planYearSelect">计划年份</label>
-          <select id="planYearSelect"></select>
-        </div>
-        <div class="field">
-          <label for="categorySelect">招生类别</label>
-          <select id="categorySelect"></select>
-        </div>
-        <div class="field">
-          <label for="scoreInput">高考分数</label>
-          <input id="scoreInput" type="number" min="0" max="750" placeholder="例如：520">
-        </div>
-        <div class="field">
-          <label for="rankInput">全省位次</label>
-          <input id="rankInput" type="number" min="1" placeholder="例如：32000">
-        </div>
-        <div class="field">
-          <label for="subjectSelect">选科要求</label>
-          <select id="subjectSelect"></select>
-        </div>
-        <div class="field">
-          <label for="majorKeyword">专业关键词</label>
-          <input id="majorKeyword" type="search" placeholder="例如：计算机">
-        </div>
-        <div class="button-group">
-          <button type="button" id="searchBtn">开始查询</button>
-          <button type="button" id="recommendBtn" class="btn-mid">智能推荐</button>
-          <button type="button" id="chanceBtn" class="btn-light">评估录取几率</button>
-        </div>
-      </form>
-    </section>
+    <div id="loadStatus" class="load-status">数据加载中...</div>
 
     <section class="stats-grid" aria-label="数据概览">
       <article class="stat-card">
-        <span class="stat-icon province-icon"></span>
-        <div><strong id="provinceCount">0</strong><p>收录省份</p></div>
+        <strong id="provinceCount">加载中</strong>
+        <p>收录省份</p>
       </article>
       <article class="stat-card">
-        <span class="stat-icon major-icon"></span>
-        <div><strong id="majorCount">0</strong><p>招生专业</p></div>
+        <strong id="majorCount">加载中</strong>
+        <p>招生专业</p>
       </article>
       <article class="stat-card">
-        <span class="stat-icon score-icon"></span>
-        <div><strong id="scoreLineCount">0</strong><p>可评估分数线</p></div>
+        <strong id="scoreLineCount">加载中</strong>
+        <p>可评估专业</p>
       </article>
       <article class="stat-card">
-        <span class="stat-icon plan-icon"></span>
-        <div><strong id="planTotal">0</strong><p>招生计划人数</p></div>
+        <strong id="newMajorCount">加载中</strong>
+        <p>新开专业</p>
       </article>
+      <article class="stat-card">
+        <strong id="planTotal">加载中</strong>
+        <p>计划人数</p>
+      </article>
+    </section>
+
+    <section class="panel" id="assessment">
+      <div class="section-title">
+        <span class="title-mark"></span>
+        <div>
+          <h2>综合评估结果</h2>
+          <p>先给出整体判断，再查看具体专业依据。</p>
+        </div>
+      </div>
+      <div id="assessmentSummary" class="empty-box">请在顶部输入考生信息后，点击“开始评估录取可能性”。</div>
+    </section>
+
+    <section class="panel" id="recommend">
+      <div class="section-title">
+        <span class="title-mark"></span>
+        <div>
+          <h2>推荐专业分组</h2>
+          <p>按照保一保、稳一稳、冲一冲、风险较高和新开专业参考分组展示。</p>
+        </div>
+      </div>
+      <div id="recommendResults" class="empty-box">输入分数或位次后，可查看适合你的专业分组。</div>
     </section>
 
     <section class="panel" id="plan">
       <div class="section-title">
         <span class="title-mark"></span>
         <div>
-          <h2>招生计划</h2>
-          <p>展示已整理的 2025 年录取分位次与 2026 年招生专业计划，暂无往年分数的专业会标记为“新开专业”。</p>
+          <h2>招生计划与录取参考</h2>
+          <p>按地区和省份查看，不一次性铺开全部数据。</p>
         </div>
       </div>
+
+      <div class="plan-browser">
+        <div>
+          <h3>地区分组</h3>
+          <div id="regionTabs" class="pill-row"></div>
+        </div>
+        <div>
+          <h3>省份选择</h3>
+          <div id="provinceButtons" class="pill-row"></div>
+        </div>
+      </div>
+
+      <div class="filter-grid slim">
+        <div class="field">
+          <label for="planCategoryFilter">招生类别</label>
+          <select id="planCategoryFilter"></select>
+        </div>
+        <div class="field">
+          <label for="planSubjectFilter">选科要求</label>
+          <select id="planSubjectFilter"></select>
+        </div>
+        <div class="field">
+          <label for="planMajorFilter">专业关键词</label>
+          <input id="planMajorFilter" type="search" placeholder="例如：软件">
+        </div>
+        <div class="inline-actions inline-bottom">
+          <button type="button" id="planFilterBtn" class="btn-mid">筛选当前省份</button>
+          <button type="button" id="planResetBtn" class="secondary-btn">重置</button>
+        </div>
+      </div>
+
+      <div id="planSummary" class="summary-line"></div>
+      <h3 id="planTableTitle" class="table-title">招生计划</h3>
       <div class="table-wrap">
         <table class="data-table">
           <thead>
             <tr>
-              <th>序号</th>
-              <th>省份</th>
               <th>招生类别</th>
               <th>专业（类）名称</th>
-              <th>2025年录取最低分</th>
-              <th>2025年录取位次</th>
+              <th>2025最低分</th>
+              <th>2025最低位次</th>
               <th>选科要求</th>
-              <th>2026年招生人数</th>
+              <th>2026计划</th>
+              <th>批次</th>
+              <th>状态</th>
             </tr>
           </thead>
           <tbody id="planTableBody"></tbody>
         </table>
       </div>
+      <div id="planExpandWrap" class="expand-wrap"></div>
     </section>
 
     <section class="panel" id="scores">
@@ -135,7 +192,7 @@
         <span class="title-mark"></span>
         <div>
           <h2>录取分数查询</h2>
-          <p>支持按省份、年份、招生类别、专业名称、最低分范围和位次范围筛选。</p>
+          <p>请选择省份、招生类别或输入专业关键词后查询录取分数。</p>
         </div>
       </div>
 
@@ -178,87 +235,27 @@
         <button type="button" id="scoreResetBtn" class="secondary-btn">重置条件</button>
       </div>
 
-      <div class="table-wrap">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>学校名称</th>
-              <th>省份</th>
-              <th>年份</th>
-              <th>招生类别</th>
-              <th>专业名称</th>
-              <th>最低分</th>
-              <th>最低位次</th>
-              <th>选科要求</th>
-              <th>招生人数</th>
-              <th>数据状态</th>
-            </tr>
-          </thead>
-          <tbody id="scoreTableBody"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="panel" id="recommend">
-      <div class="section-title">
-        <span class="title-mark"></span>
-        <div>
-          <h2>智能推荐</h2>
-          <p>普通推荐优先使用位次判断，未填写位次时再使用分数判断；暂无往年录取数据的专业单独列为“新开专业参考”。</p>
+      <div id="scoreNotice" class="empty-box">请选择省份、招生类别或输入专业关键词后查询录取分数。</div>
+      <div id="scoreResultWrap" class="hidden">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>省份</th>
+                <th>年份</th>
+                <th>招生类别</th>
+                <th>专业名称</th>
+                <th>最低分</th>
+                <th>最低位次</th>
+                <th>选科要求</th>
+                <th>计划人数</th>
+                <th>状态</th>
+              </tr>
+            </thead>
+            <tbody id="scoreTableBody"></tbody>
+          </table>
         </div>
-      </div>
-      <div id="recommendResults" class="empty-box">请输入分数或位次后点击“智能推荐”。</div>
-    </section>
-
-    <section class="panel" id="chance">
-      <div class="section-title">
-        <span class="title-mark"></span>
-        <div>
-          <h2>录取几率评估</h2>
-          <p>根据考生分数、位次、选科要求和历年录取数据，在同一省份、同一招生类别内估算专业录取可能性。</p>
-        </div>
-      </div>
-
-      <form id="chanceForm" class="form-grid compact-form">
-        <div class="field">
-          <label for="chanceProvince">考生省份</label>
-          <select id="chanceProvince"></select>
-        </div>
-        <div class="field">
-          <label for="chanceYear">年份</label>
-          <select id="chanceYear"></select>
-        </div>
-        <div class="field">
-          <label for="chancePlanYear">计划年份</label>
-          <select id="chancePlanYear"></select>
-        </div>
-        <div class="field">
-          <label for="chanceCategory">招生类别</label>
-          <select id="chanceCategory"></select>
-        </div>
-        <div class="field">
-          <label for="chanceScore">高考分数</label>
-          <input id="chanceScore" type="number" min="0" max="750" placeholder="例如：520">
-        </div>
-        <div class="field">
-          <label for="chanceRank">全省位次</label>
-          <input id="chanceRank" type="number" min="1" placeholder="例如：32000">
-        </div>
-        <div class="field">
-          <label for="chanceSubject">选科要求</label>
-          <select id="chanceSubject"></select>
-        </div>
-        <div class="field">
-          <label for="chanceMajor">意向专业</label>
-          <input id="chanceMajor" type="search" placeholder="例如：软件">
-        </div>
-      </form>
-      <div class="inline-actions">
-        <button type="button" id="chanceSubmitBtn">评估录取几率</button>
-      </div>
-      <div id="chanceResults" class="empty-box">请填写考生信息后开始评估。</div>
-      <div class="algorithm-note">
-        <strong>算法说明：</strong>系统优先根据位次差计算录取几率，其次使用分数差；招生人数较多时小幅提高概率，招生人数较少时小幅降低概率。对于新开专业或暂无往年录取数据的专业，系统不会给出具体录取概率。此类专业的录取风险主要受当年报考人数、招生计划、专业热度和投档规则影响，建议作为参考志愿谨慎填报。
+        <div id="scoreExpandWrap" class="expand-wrap"></div>
       </div>
     </section>
 
@@ -267,22 +264,20 @@
         <span class="title-mark"></span>
         <div>
           <h2>院校介绍</h2>
-          <p>重庆工程学院基本信息与招生咨询提示。</p>
+          <p>重庆工程学院基本信息与专业方向参考。</p>
         </div>
       </div>
       <div class="about-grid">
+        <dl class="school-info">
+          <dt>学校名称</dt><dd>重庆工程学院</dd>
+          <dt>英文名称</dt><dd>Chongqing Institute of Engineering</dd>
+          <dt>学校所在地</dt><dd>重庆市</dd>
+          <dt>办学层次</dt><dd>本科</dd>
+        </dl>
         <div>
-          <dl class="school-info">
-            <dt>学校名称</dt><dd>重庆工程学院</dd>
-            <dt>英文名称</dt><dd>Chongqing Institute of Engineering</dd>
-            <dt>学校所在地</dt><dd>重庆市</dd>
-            <dt>办学层次</dt><dd>本科</dd>
-          </dl>
-        </div>
-        <div>
-          <p>重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。本页面用于展示招生计划、录取分数和专业查询功能。</p>
-          <p><strong>特色专业：</strong>计算机类、电子信息类、自动化类、智能制造工程、网络与新媒体。</p>
-          <p><strong>招生咨询提示：</strong>正式填报前，请以各省考试院和重庆工程学院官方招生信息为准。</p>
+          <p>重庆工程学院是一所以工学为主，计算机、电子信息、智能制造、管理等多学科协调发展的应用型本科高校。学校面向区域经济社会发展需求，注重学生实践能力、工程能力和创新能力培养。</p>
+          <p><strong>特色专业方向：</strong>计算机类、电子信息类、自动化类、智能制造工程、网络与新媒体。</p>
+          <p><strong>填报提醒：</strong>正式填报前，请结合学校官方招生章程、所在省份投档规则和当年招生计划综合判断。</p>
         </div>
       </div>
     </section>
@@ -292,22 +287,23 @@
         <span class="title-mark"></span>
         <div>
           <h2>数据说明</h2>
-          <p>本系统为前端静态演示版本，数据结构后续可继续替换扩展。</p>
+          <p>以下说明用于帮助理解本系统结果边界。</p>
         </div>
       </div>
       <ul class="note-list">
-        <li>当前网站为前端静态演示版本，不使用后端和数据库。</li>
-        <li>本系统数据根据用户提供的招生计划和录取分数资料整理，仅供信息查询和功能展示使用。</li>
-        <li>录取几率为系统根据历史分数、位次和招生计划进行的规则化估算，不代表真实录取结果。</li>
-        <li>部分专业为新开专业或新增招生专业，暂无 2025 年录取最低分和最低位次。系统会在页面中标记为“新开专业”，此类专业不参与基于历史分数和位次的录取概率计算。</li>
-        <li>美术类分数为综合分或专业相关分数体系，评估结果只能在同类别数据内参考。</li>
-        <li>真实志愿填报请以各省考试院和重庆工程学院官方公布信息为准。</li>
+        <li>本系统数据根据用户整理的招生计划和录取分数资料生成。</li>
+        <li>录取可能性为系统根据历史分数、位次和招生计划进行的规则化估算。</li>
+        <li>该结果不代表真实录取结果，不能作为正式志愿填报的唯一依据。</li>
+        <li>真实录取受招生计划、报考人数、专业热度、投档规则、选科要求等因素影响。</li>
+        <li>正式填报请以各省考试院和重庆工程学院官方公布信息为准。</li>
+        <li>新开专业暂无往年录取数据，系统不会给出具体录取概率。</li>
+        <li>美术类分数为综合分或专业相关分数体系，不能与普通物理类、历史类分数直接比较，本评估仅在美术类数据内部参考。</li>
       </ul>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p>重庆工程学院招生计划与录取分数查询系统 · GitHub Pages 静态网站原型</p>
+    <p>重庆工程学院招生录取参考查询系统</p>
   </footer>
 
   <script src="js/main.js"></script>

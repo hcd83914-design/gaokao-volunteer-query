@@ -1,4 +1,4 @@
-/* 数据会优先从 data/data.json 读取；直接打开 index.html 时使用下方兜底数据。 */
+/* 优先读取 data/data.json；直接打开 index.html 且浏览器限制本地读取时，使用构建时嵌入的兜底数据。 */
 const fallbackData = [
   {
     "id": 1,
@@ -6992,14 +6992,29 @@ const fallbackData = [
   }
 ];
 
+const regionMap = {
+  "西南地区": ["重庆", "四川", "贵州", "云南"],
+  "华南地区": ["广东", "广西", "海南"],
+  "华东地区": ["福建", "江西", "浙江", "江苏", "安徽", "山东"],
+  "华中地区": ["河南", "湖北", "湖南"],
+  "华北地区": ["河北", "山西", "内蒙古"],
+  "西北地区": ["新疆", "宁夏", "甘肃", "陕西", "青海"],
+  "东北地区": ["黑龙江", "吉林", "辽宁"],
+};
+
 let allData = [];
-let planFilteredData = [];
-let scoreFilteredData = [];
+let selectedRegion = "";
+let selectedPlanProvince = "";
+let planExpanded = false;
+let scoreExpanded = false;
+let currentPlanRows = [];
+let currentScoreRows = [];
 
 const dom = {};
 
 document.addEventListener("DOMContentLoaded", async () => {
   cacheDom();
+  setLoadStatus("数据加载中...", "loading");
   await loadData();
   initPage();
   bindEvents();
@@ -7007,6 +7022,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 function cacheDom() {
   [
+    "loadStatus",
     "provinceSelect",
     "yearSelect",
     "planYearSelect",
@@ -7015,14 +7031,28 @@ function cacheDom() {
     "rankInput",
     "subjectSelect",
     "majorKeyword",
+    "majorList",
     "searchBtn",
     "recommendBtn",
     "chanceBtn",
     "provinceCount",
     "majorCount",
     "scoreLineCount",
+    "newMajorCount",
     "planTotal",
+    "assessmentSummary",
+    "recommendResults",
+    "regionTabs",
+    "provinceButtons",
+    "planCategoryFilter",
+    "planSubjectFilter",
+    "planMajorFilter",
+    "planFilterBtn",
+    "planResetBtn",
+    "planSummary",
+    "planTableTitle",
     "planTableBody",
+    "planExpandWrap",
     "scoreProvince",
     "scoreYear",
     "scoreCategory",
@@ -7033,18 +7063,10 @@ function cacheDom() {
     "maxRankFilter",
     "scoreSearchBtn",
     "scoreResetBtn",
+    "scoreNotice",
+    "scoreResultWrap",
     "scoreTableBody",
-    "recommendResults",
-    "chanceProvince",
-    "chanceYear",
-    "chancePlanYear",
-    "chanceCategory",
-    "chanceScore",
-    "chanceRank",
-    "chanceSubject",
-    "chanceMajor",
-    "chanceSubmitBtn",
-    "chanceResults",
+    "scoreExpandWrap",
   ].forEach((id) => {
     dom[id] = document.getElementById(id);
   });
@@ -7057,9 +7079,15 @@ async function loadData() {
       throw new Error(`HTTP ${response.status}`);
     }
     allData = await response.json();
+    setLoadStatus("数据已加载完成。", "success");
   } catch (error) {
     allData = Array.isArray(fallbackData) ? fallbackData : [];
-    console.warn("未能读取 data/data.json，已使用内置兜底数据。", error);
+    if (allData.length) {
+      setLoadStatus("数据加载失败，已切换为本地兜底数据。线上访问请检查 data/data.json 是否已上传。", "warning");
+    } else {
+      setLoadStatus("数据加载失败，请检查 data/data.json 是否存在并可访问。", "warning");
+    }
+    console.warn("数据加载失败，已尝试使用本地兜底数据。", error);
   }
 
   allData = allData.map((item, index) => ({
@@ -7071,16 +7099,40 @@ async function loadData() {
     minRank: toNumberOrNull(item.minRank),
     planCount: toNumberOrNull(item.planCount),
   }));
-
-  planFilteredData = [...allData];
-  scoreFilteredData = [...allData];
 }
 
 function initPage() {
   initSelects();
   renderStats();
-  renderPlanTable(planFilteredData);
-  renderScoreTable(scoreFilteredData);
+  initPlanBrowser();
+  renderPlanSection();
+  resetScoreResults();
+}
+
+function bindEvents() {
+  dom.searchBtn.addEventListener("click", () => {
+    syncPlanFiltersFromMain();
+    renderPlanSection();
+    document.getElementById("plan").scrollIntoView({ behavior: "smooth" });
+  });
+
+  dom.recommendBtn.addEventListener("click", () => {
+    runAssessment(true);
+    document.getElementById("recommend").scrollIntoView({ behavior: "smooth" });
+  });
+
+  dom.chanceBtn.addEventListener("click", () => {
+    runAssessment(true);
+    document.getElementById("assessment").scrollIntoView({ behavior: "smooth" });
+  });
+
+  dom.planFilterBtn.addEventListener("click", () => {
+    planExpanded = false;
+    renderPlanSection();
+  });
+  dom.planResetBtn.addEventListener("click", resetPlanFilters);
+  dom.scoreSearchBtn.addEventListener("click", handleScoreSearch);
+  dom.scoreResetBtn.addEventListener("click", resetScoreResults);
 }
 
 function initSelects() {
@@ -7089,43 +7141,469 @@ function initSelects() {
   const planYears = uniqueValues(allData.map((item) => item.planYear)).sort((a, b) => b - a);
   const categories = uniqueValues(allData.map((item) => item.enrollCategory));
   const subjects = uniqueValues(allData.map((item) => item.subjectRequirement));
+  const majors = uniqueValues(allData.map((item) => item.majorName));
 
-  fillSelect(dom.provinceSelect, provinces, "全部省份");
+  fillSelect(dom.provinceSelect, provinces, "请选择省份");
   fillSelect(dom.yearSelect, years, "全部年份");
   fillSelect(dom.planYearSelect, planYears, "全部计划年份");
-  fillSelect(dom.categorySelect, categories, "全部类别");
+  fillSelect(dom.categorySelect, categories, "请选择招生类别");
   fillSelect(dom.subjectSelect, subjects, "全部选科要求");
-
-  fillSelect(dom.scoreProvince, provinces, "全部省份");
+  fillSelect(dom.planCategoryFilter, categories, "全部招生类别");
+  fillSelect(dom.planSubjectFilter, subjects, "全部选科要求");
+  fillSelect(dom.scoreProvince, provinces, "请选择省份");
   fillSelect(dom.scoreYear, years, "全部年份");
-  fillSelect(dom.scoreCategory, categories, "全部类别");
+  fillSelect(dom.scoreCategory, categories, "全部招生类别");
 
-  fillSelect(dom.chanceProvince, provinces, "全部省份");
-  fillSelect(dom.chanceYear, years, "全部年份");
-  fillSelect(dom.chancePlanYear, planYears, "全部计划年份");
-  fillSelect(dom.chanceCategory, categories, "全部类别");
-  fillSelect(dom.chanceSubject, subjects, "全部选科要求");
+  dom.majorList.innerHTML = majors.map((major) => `<option value="${escapeHtml(major)}"></option>`).join("");
 }
 
-function bindEvents() {
-  dom.searchBtn.addEventListener("click", handlePlanSearch);
-  dom.recommendBtn.addEventListener("click", handleRecommend);
-  dom.chanceBtn.addEventListener("click", () => {
-    copyMainInputsToChance();
-    handleChance();
-    document.getElementById("chance").scrollIntoView({ behavior: "smooth" });
+function renderStats() {
+  const newMajorCount = allData.filter(isNewMajor).length;
+  dom.provinceCount.textContent = uniqueValues(allData.map((item) => item.province)).length;
+  dom.majorCount.textContent = uniqueValues(allData.map((item) => item.majorName)).length;
+  dom.scoreLineCount.textContent = allData.length - newMajorCount;
+  dom.newMajorCount.textContent = newMajorCount;
+  dom.planTotal.textContent = allData.reduce((sum, item) => sum + (item.planCount || 0), 0);
+}
+
+function initPlanBrowser() {
+  const provinces = uniqueValues(allData.map((item) => item.province));
+  const regionNames = Object.keys(regionMap).filter((region) => {
+    return regionMap[region].some((province) => provinces.includes(province));
   });
-  dom.scoreSearchBtn.addEventListener("click", handleScoreSearch);
-  dom.scoreResetBtn.addEventListener("click", resetScoreFilters);
-  dom.chanceSubmitBtn.addEventListener("click", handleChance);
+  selectedPlanProvince = provinces.includes("重庆") ? "重庆" : provinces[0] || "";
+  selectedRegion = getRegionByProvince(selectedPlanProvince) || regionNames[0] || "";
+  renderRegionTabs(regionNames);
+  renderProvinceButtons();
 }
 
-function handlePlanSearch() {
-  planFilteredData = getMainFilteredData();
-  renderPlanTable(planFilteredData);
+function renderRegionTabs(regionNames) {
+  dom.regionTabs.innerHTML = regionNames
+    .map((region) => {
+      const count = allData.filter((item) => getRegionByProvince(item.province) === region).length;
+      return `<button type="button" class="pill ${region === selectedRegion ? "active" : ""}" data-region="${escapeHtml(region)}">${escapeHtml(region)} ${count} 条</button>`;
+    })
+    .join("");
+
+  dom.regionTabs.querySelectorAll("button").forEach((button) => {
+    button.addEventListener("click", () => {
+      selectedRegion = button.dataset.region;
+      const provinces = getProvincesInRegion(selectedRegion);
+      selectedPlanProvince = provinces.includes("重庆") ? "重庆" : provinces[0] || "";
+      planExpanded = false;
+      renderRegionTabs(regionNames);
+      renderProvinceButtons();
+      renderPlanSection();
+    });
+  });
+}
+
+function renderProvinceButtons() {
+  const provinces = getProvincesInRegion(selectedRegion);
+  dom.provinceButtons.innerHTML = provinces
+    .map((province) => {
+      const count = allData.filter((item) => item.province === province).length;
+      return `<button type="button" class="pill ${province === selectedPlanProvince ? "active" : ""}" data-province="${escapeHtml(province)}">${escapeHtml(province)} ${count} 条</button>`;
+    })
+    .join("");
+
+  dom.provinceButtons.querySelectorAll("button").forEach((button) => {
+    button.addEventListener("click", () => {
+      selectedPlanProvince = button.dataset.province;
+      planExpanded = false;
+      renderProvinceButtons();
+      renderPlanSection();
+    });
+  });
+}
+
+function syncPlanFiltersFromMain() {
+  if (dom.provinceSelect.value) {
+    selectedPlanProvince = dom.provinceSelect.value;
+    selectedRegion = getRegionByProvince(selectedPlanProvince) || selectedRegion;
+  }
+  dom.planCategoryFilter.value = dom.categorySelect.value || "";
+  dom.planSubjectFilter.value = dom.subjectSelect.value || "";
+  dom.planMajorFilter.value = dom.majorKeyword.value.trim();
+  planExpanded = false;
+  const provinces = uniqueValues(allData.map((item) => item.province));
+  const regionNames = Object.keys(regionMap).filter((region) => {
+    return regionMap[region].some((province) => provinces.includes(province));
+  });
+  renderRegionTabs(regionNames);
+  renderProvinceButtons();
+}
+
+function renderPlanSection() {
+  currentPlanRows = getPlanFilteredData();
+  const shownRows = planExpanded ? currentPlanRows : currentPlanRows.slice(0, 10);
+  const categoryText = dom.planCategoryFilter.value || "全部";
+  const regionText = selectedRegion || "未选择";
+  const provinceText = selectedPlanProvince || "未选择";
+
+  dom.planSummary.textContent = `当前地区：${regionText}；当前省份：${provinceText}；招生类别：${categoryText}；数据条数：${currentPlanRows.length} 条`;
+  dom.planTableTitle.textContent = `重庆工程学院 2026 年在${provinceText}招生计划与 2025 年录取参考`;
+  renderPlanTable(shownRows);
+  renderExpandButton(dom.planExpandWrap, currentPlanRows.length, planExpanded, () => {
+    planExpanded = !planExpanded;
+    renderPlanSection();
+  }, 10);
+}
+
+function getPlanFilteredData() {
+  const category = dom.planCategoryFilter.value;
+  const subject = dom.planSubjectFilter.value;
+  const keyword = dom.planMajorFilter.value.trim();
+  return allData.filter((item) => {
+    return (
+      item.province === selectedPlanProvince &&
+      matchText(item.enrollCategory, category) &&
+      matchSubject(item.subjectRequirement, subject) &&
+      matchKeyword(item.majorName, keyword)
+    );
+  });
+}
+
+function renderPlanTable(rows) {
+  if (!rows.length) {
+    dom.planTableBody.innerHTML = `<tr><td colspan="8">当前条件下暂无招生计划数据。</td></tr>`;
+    return;
+  }
+
+  dom.planTableBody.innerHTML = rows
+    .map((item) => `
+      <tr>
+        <td>${escapeHtml(item.enrollCategory)}</td>
+        <td>${escapeHtml(item.majorName)}</td>
+        <td>${formatValue(item.minScore)}</td>
+        <td>${formatValue(item.minRank)}</td>
+        <td>${escapeHtml(item.subjectRequirement || "不限")}</td>
+        <td>${formatValue(item.planCount)}</td>
+        <td>${escapeHtml(item.batch || "")}</td>
+        <td>${statusBadge(item)}</td>
+      </tr>
+    `)
+    .join("");
+}
+
+function resetPlanFilters() {
+  dom.planCategoryFilter.value = "";
+  dom.planSubjectFilter.value = "";
+  dom.planMajorFilter.value = "";
+  planExpanded = false;
+  renderPlanSection();
+}
+
+function runAssessment(renderRecommendation) {
+  const user = getUserInput();
+  if (user.score === null && user.rank === null) {
+    dom.assessmentSummary.innerHTML = `<div class="empty-box">请至少填写高考分数或全省位次后再评估。</div>`;
+    dom.recommendResults.innerHTML = `<div class="empty-box">请至少填写高考分数或全省位次后再查看推荐专业。</div>`;
+    return;
+  }
+
+  const rows = getMainFilteredData();
+  const normalRows = rows.filter((item) => hasHistoricalData(item));
+  const newRows = rows.filter(isNewMajor);
+  const evaluatedRows = normalRows.map((item) => ({ ...item, evaluation: evaluateMajor(item, user) }));
+  evaluatedRows.sort((a, b) => b.evaluation.baseProbability - a.evaluation.baseProbability);
+
+  renderAssessmentSummary(evaluatedRows, newRows, user);
+  if (renderRecommendation) {
+    renderRecommendGroups(evaluatedRows, newRows, user);
+  }
+}
+
+function getUserInput() {
+  return {
+    province: dom.provinceSelect.value,
+    category: dom.categorySelect.value,
+    year: dom.yearSelect.value,
+    planYear: dom.planYearSelect.value,
+    subject: dom.subjectSelect.value,
+    keyword: dom.majorKeyword.value.trim(),
+    score: toNumberOrNull(dom.scoreInput.value),
+    rank: toNumberOrNull(dom.rankInput.value),
+  };
+}
+
+function getMainFilteredData() {
+  const user = getUserInput();
+  return allData.filter((item) => {
+    return (
+      matchText(item.province, user.province) &&
+      matchText(item.enrollCategory, user.category) &&
+      matchText(String(item.year || ""), user.year) &&
+      matchText(String(item.planYear || ""), user.planYear) &&
+      matchSubject(item.subjectRequirement, user.subject) &&
+      matchKeyword(item.majorName, user.keyword)
+    );
+  });
+}
+
+function evaluateMajor(item, user) {
+  let baseProbability = 0;
+  let rankDiff = null;
+  let scoreDiff = null;
+  const reasons = [];
+
+  if (user.rank !== null && item.minRank !== null) {
+    rankDiff = item.minRank - user.rank;
+    if (rankDiff >= 12000) baseProbability = 88;
+    else if (rankDiff >= 5000) baseProbability = 76;
+    else if (rankDiff >= -3000) baseProbability = 61;
+    else if (rankDiff >= -10000) baseProbability = 38;
+    else baseProbability = 18;
+    reasons.push(rankDiff >= 0
+      ? `你的位次比该专业 2025 年最低录取位次靠前 ${rankDiff} 名`
+      : `你的位次比该专业 2025 年最低录取位次靠后 ${Math.abs(rankDiff)} 名`);
+  }
+
+  if (user.score !== null && item.minScore !== null) {
+    scoreDiff = user.score - item.minScore;
+    if (user.rank === null || item.minRank === null) {
+      if (scoreDiff >= 45) baseProbability = 86;
+      else if (scoreDiff >= 20) baseProbability = 74;
+      else if (scoreDiff >= -10) baseProbability = 58;
+      else if (scoreDiff >= -25) baseProbability = 35;
+      else baseProbability = 16;
+    }
+    reasons.push(scoreDiff >= 0
+      ? `分数高出 2025 年最低分 ${scoreDiff} 分`
+      : `分数低于 2025 年最低分 ${Math.abs(scoreDiff)} 分`);
+  }
+
+  if ((item.planCount || 0) >= 20) baseProbability += 3;
+  if ((item.planCount || 0) > 0 && item.planCount <= 3) baseProbability -= 4;
+  baseProbability = Math.max(5, Math.min(92, baseProbability));
+
+  const level = getProbabilityLevel(baseProbability);
+  const range = getProbabilityRange(baseProbability);
+  const risk = getRiskLevel(baseProbability);
+  const recommendType = getRecommendType(baseProbability);
+  const basis = buildBasisText(item, user, rankDiff, scoreDiff, recommendType);
+
+  return { baseProbability, level, range, risk, recommendType, rankDiff, scoreDiff, reasons, basis };
+}
+
+function buildBasisText(item, user, rankDiff, scoreDiff, recommendType) {
+  const parts = [];
+  if (rankDiff !== null) {
+    parts.push(rankDiff >= 0
+      ? `你的位次比该专业 2025 年最低录取位次靠前 ${rankDiff} 名`
+      : `你的位次比该专业 2025 年最低录取位次靠后 ${Math.abs(rankDiff)} 名`);
+  }
+  if (scoreDiff !== null) {
+    parts.push(scoreDiff >= 0
+      ? `分数高出 ${scoreDiff} 分`
+      : `分数低于 ${Math.abs(scoreDiff)} 分`);
+  }
+  parts.push(`2026 年计划招生 ${formatValue(item.planCount) || "待核对"} 人`);
+  return `${parts.join("，")}。综合判断为${recommendType}。`;
+}
+
+function getProbabilityRange(probability) {
+  if (probability >= 85) return "85% - 90%";
+  if (probability >= 75) return "75% - 85%";
+  if (probability >= 60) return "60% - 75%";
+  if (probability >= 45) return "45% - 60%";
+  if (probability >= 25) return "25% - 45%";
+  return "5% - 25%";
+}
+
+function getProbabilityLevel(probability) {
+  if (probability >= 75) return "较高";
+  if (probability >= 60) return "中等偏高";
+  if (probability >= 45) return "中等";
+  if (probability >= 25) return "较低";
+  return "风险较高";
+}
+
+function getRiskLevel(probability) {
+  if (probability >= 75) return "较低风险";
+  if (probability >= 60) return "中等风险";
+  if (probability >= 45) return "中等偏高风险";
+  if (probability >= 25) return "较高风险";
+  return "高风险";
+}
+
+function getRecommendType(probability) {
+  if (probability >= 75) return "保一保";
+  if (probability >= 55) return "稳一稳";
+  if (probability >= 30) return "冲一冲";
+  return "谨慎填报";
+}
+
+function renderAssessmentSummary(evaluatedRows, newRows, user) {
+  if (!evaluatedRows.length && !newRows.length) {
+    dom.assessmentSummary.innerHTML = `<div class="empty-box">没有找到符合当前条件的专业，请调整省份、类别或专业关键词。</div>`;
+    return;
+  }
+
+  if (!evaluatedRows.length) {
+    dom.assessmentSummary.innerHTML = `
+      <div class="summary-card">
+        <div class="summary-top">
+          <div>
+            <h3 class="summary-title">当前条件下主要为新开专业参考</h3>
+            <p>暂无可用于历史位次或分数对比的专业，系统不生成具体录取概率。</p>
+          </div>
+          <span class="tag tag-new">暂无往年数据</span>
+        </div>
+        <p class="risk-note">建议重点参考 2026 年招生计划人数、选科要求、专业热度以及学校官方招生说明。</p>
+      </div>
+    `;
+    return;
+  }
+
+  const avg = Math.round(evaluatedRows.reduce((sum, item) => sum + item.evaluation.baseProbability, 0) / evaluatedRows.length);
+  const best = evaluatedRows[0];
+  const safeCount = evaluatedRows.filter((item) => item.evaluation.recommendType === "保一保").length;
+  const stableCount = evaluatedRows.filter((item) => item.evaluation.recommendType === "稳一稳").length;
+  const rushCount = evaluatedRows.filter((item) => item.evaluation.recommendType === "冲一冲").length;
+  const riskCount = evaluatedRows.filter((item) => item.evaluation.recommendType === "谨慎填报").length;
+  const overall = getOverallText(avg);
+  const tagClassName = getTagClass(getRecommendType(avg));
+
+  dom.assessmentSummary.innerHTML = `
+    <div class="summary-card">
+      <div class="summary-top">
+        <div>
+          <h3 class="summary-title">${overall.title}</h3>
+          <p>${overall.subtitle}</p>
+        </div>
+        <span class="tag ${tagClassName}">${getRecommendType(avg)}</span>
+      </div>
+      <div class="summary-grid">
+        <div class="summary-item"><span>录取可能性等级</span><strong>${getProbabilityLevel(avg)}</strong></div>
+        <div class="summary-item"><span>参考概率区间</span><strong>${getProbabilityRange(avg)}</strong></div>
+        <div class="summary-item"><span>风险等级</span><strong>${getRiskLevel(avg)}</strong></div>
+        <div class="summary-item"><span>可参考专业</span><strong>${evaluatedRows.length} 个</strong></div>
+      </div>
+      <p class="summary-reason">主要依据：当前条件下，最匹配专业为“${escapeHtml(best.majorName)}”。${escapeHtml(best.evaluation.basis)}</p>
+      <p class="risk-note">分组结果：保一保 ${safeCount} 个，稳一稳 ${stableCount} 个，冲一冲 ${rushCount} 个，风险较高 ${riskCount} 个，新开专业参考 ${newRows.length} 个。${getSpecialTip(user.category)}</p>
+    </div>
+  `;
+}
+
+function getOverallText(probability) {
+  if (probability >= 75) return { title: "报考重庆工程学院整体机会较大", subtitle: "建议优先关注保一保和稳一稳专业，同时保留梯度。" };
+  if (probability >= 60) return { title: "报考重庆工程学院有一定机会", subtitle: "建议以稳一稳专业为主，搭配少量冲刺专业。" };
+  if (probability >= 45) return { title: "报考重庆工程学院机会中等", subtitle: "建议认真比较专业热度和计划人数，合理拉开梯度。" };
+  if (probability >= 25) return { title: "报考重庆工程学院风险偏高", subtitle: "建议作为冲刺参考，并准备更稳妥的备选方案。" };
+  return { title: "报考重庆工程学院风险较高", subtitle: "建议谨慎填报，优先确认投档规则和当年计划变化。" };
+}
+
+function renderRecommendGroups(evaluatedRows, newRows, user) {
+  const groups = [
+    { title: "保一保专业", type: "保一保", className: "tag-safe" },
+    { title: "稳一稳专业", type: "稳一稳", className: "tag-stable" },
+    { title: "冲一冲专业", type: "冲一冲", className: "tag-rush" },
+    { title: "风险较高专业", type: "谨慎填报", className: "tag-risk" },
+  ];
+
+  const html = groups
+    .map((group) => {
+      const rows = evaluatedRows.filter((item) => item.evaluation.recommendType === group.type);
+      if (!rows.length) return "";
+      return `
+        <div class="recommend-group">
+          <h3 class="group-title">${group.title} ${rows.length} 个</h3>
+          <div class="card-grid">${rows.map((item) => renderMajorCard(item, user)).join("")}</div>
+        </div>
+      `;
+    })
+    .join("");
+
+  const newHtml = newRows.length
+    ? `
+      <div class="recommend-group">
+        <h3 class="group-title">新开专业参考 ${newRows.length} 个</h3>
+        <div class="card-grid">${newRows.map((item) => renderNewMajorCard(item, user)).join("")}</div>
+      </div>
+    `
+    : "";
+
+  const artTip = isArtCategory(user.category)
+    ? `<p class="art-tip">美术类分数为综合分或专业相关分数体系，不能与普通物理类、历史类分数直接比较。本评估仅在美术类数据内部进行参考。</p>`
+    : "";
+
+  dom.recommendResults.innerHTML = html || newHtml ? html + newHtml + artTip : `<div class="empty-box">没有找到符合当前条件的推荐结果。</div>`;
+}
+
+function renderMajorCard(item, user) {
+  const ev = item.evaluation;
+  return `
+    <article class="result-card">
+      <div class="result-head">
+        <h3>${escapeHtml(item.majorName)}</h3>
+        <span class="tag ${getTagClass(ev.recommendType)}">${escapeHtml(ev.recommendType)}</span>
+      </div>
+      <dl>
+        <dt>省份</dt><dd>${escapeHtml(item.province)}</dd>
+        <dt>招生类别</dt><dd>${escapeHtml(item.enrollCategory)}</dd>
+        <dt>选科要求</dt><dd>${escapeHtml(item.subjectRequirement || "不限")}</dd>
+        <dt>最低分</dt><dd>${formatValue(item.minScore)}</dd>
+        <dt>最低位次</dt><dd>${formatValue(item.minRank)}</dd>
+        <dt>计划人数</dt><dd>${formatValue(item.planCount)}</dd>
+        <dt>你的分数</dt><dd>${formatValue(user.score)}</dd>
+        <dt>你的位次</dt><dd>${formatValue(user.rank)}</dd>
+        <dt>分数差</dt><dd>${formatDiff(ev.scoreDiff, "分")}</dd>
+        <dt>位次差</dt><dd>${formatRankDiff(ev.rankDiff)}</dd>
+        <dt>可能性</dt><dd>${escapeHtml(ev.level)}</dd>
+        <dt>参考区间</dt><dd>${escapeHtml(ev.range)}</dd>
+        <dt>风险等级</dt><dd>${escapeHtml(ev.risk)}</dd>
+      </dl>
+      <p class="basis"><strong>为什么：</strong>${escapeHtml(ev.basis)}</p>
+    </article>
+  `;
+}
+
+function renderNewMajorCard(item, user) {
+  return `
+    <article class="result-card">
+      <div class="result-head">
+        <h3>${escapeHtml(item.majorName)}</h3>
+        <span class="tag tag-new">新开专业</span>
+      </div>
+      <dl>
+        <dt>省份</dt><dd>${escapeHtml(item.province)}</dd>
+        <dt>招生类别</dt><dd>${escapeHtml(item.enrollCategory)}</dd>
+        <dt>选科要求</dt><dd>${escapeHtml(item.subjectRequirement || "不限")}</dd>
+        <dt>最低分</dt><dd>—</dd>
+        <dt>最低位次</dt><dd>—</dd>
+        <dt>计划人数</dt><dd>${formatValue(item.planCount)}</dd>
+        <dt>你的分数</dt><dd>${formatValue(user.score)}</dd>
+        <dt>你的位次</dt><dd>${formatValue(user.rank)}</dd>
+      </dl>
+      <p class="chance-empty">暂无历史数据，无法估算录取几率。</p>
+      <p class="basis">该专业可能为新开专业或新增招生专业，暂无上一年度录取最低分和最低位次，因此系统无法根据历史数据计算录取几率。建议重点参考 2026 年招生计划人数、选科要求、专业热度以及学校官方招生说明。</p>
+    </article>
+  `;
 }
 
 function handleScoreSearch() {
+  const hasCondition =
+    dom.scoreProvince.value ||
+    dom.scoreYear.value ||
+    dom.scoreCategory.value ||
+    dom.scoreMajor.value.trim() ||
+    dom.minScoreFilter.value ||
+    dom.maxScoreFilter.value ||
+    dom.minRankFilter.value ||
+    dom.maxRankFilter.value;
+
+  if (!hasCondition) {
+    resetScoreResults();
+    return;
+  }
+
+  scoreExpanded = false;
+  currentScoreRows = getScoreFilteredData();
+  renderScoreResults();
+}
+
+function getScoreFilteredData() {
   const province = dom.scoreProvince.value;
   const year = dom.scoreYear.value;
   const category = dom.scoreCategory.value;
@@ -7135,7 +7613,7 @@ function handleScoreSearch() {
   const minRank = toNumberOrNull(dom.minRankFilter.value);
   const maxRank = toNumberOrNull(dom.maxRankFilter.value);
 
-  scoreFilteredData = allData.filter((item) => {
+  return allData.filter((item) => {
     return (
       matchText(item.province, province) &&
       matchText(String(item.year || ""), year) &&
@@ -7145,11 +7623,40 @@ function handleScoreSearch() {
       matchNumberRange(item.minRank, minRank, maxRank)
     );
   });
-
-  renderScoreTable(scoreFilteredData);
 }
 
-function resetScoreFilters() {
+function renderScoreResults() {
+  dom.scoreNotice.classList.add("hidden");
+  dom.scoreResultWrap.classList.remove("hidden");
+  const rows = scoreExpanded ? currentScoreRows : currentScoreRows.slice(0, 20);
+
+  if (!rows.length) {
+    dom.scoreTableBody.innerHTML = `<tr><td colspan="9">当前条件下暂无录取分数数据。</td></tr>`;
+  } else {
+    dom.scoreTableBody.innerHTML = rows
+      .map((item) => `
+        <tr>
+          <td>${escapeHtml(item.province)}</td>
+          <td>${formatValue(item.year)}</td>
+          <td>${escapeHtml(item.enrollCategory)}</td>
+          <td>${escapeHtml(item.majorName)}</td>
+          <td>${formatValue(item.minScore)}</td>
+          <td>${formatValue(item.minRank)}</td>
+          <td>${escapeHtml(item.subjectRequirement || "不限")}</td>
+          <td>${formatValue(item.planCount)}</td>
+          <td>${statusBadge(item)}</td>
+        </tr>
+      `)
+      .join("");
+  }
+
+  renderExpandButton(dom.scoreExpandWrap, currentScoreRows.length, scoreExpanded, () => {
+    scoreExpanded = !scoreExpanded;
+    renderScoreResults();
+  }, 20);
+}
+
+function resetScoreResults() {
   [
     dom.scoreProvince,
     dom.scoreYear,
@@ -7162,306 +7669,47 @@ function resetScoreFilters() {
   ].forEach((field) => {
     field.value = "";
   });
-  scoreFilteredData = [...allData];
-  renderScoreTable(scoreFilteredData);
+  scoreExpanded = false;
+  currentScoreRows = [];
+  dom.scoreResultWrap.classList.add("hidden");
+  dom.scoreNotice.classList.remove("hidden");
+  dom.scoreNotice.textContent = "请选择省份、招生类别或输入专业关键词后查询录取分数。";
 }
 
-function getMainFilteredData() {
-  const province = dom.provinceSelect.value;
-  const year = dom.yearSelect.value;
-  const planYear = dom.planYearSelect.value;
-  const category = dom.categorySelect.value;
-  const subject = dom.subjectSelect.value;
-  const keyword = dom.majorKeyword.value.trim();
-
-  return allData.filter((item) => {
-    return (
-      matchText(item.province, province) &&
-      matchText(String(item.year || ""), year) &&
-      matchText(String(item.planYear || ""), planYear) &&
-      matchText(item.enrollCategory, category) &&
-      matchText(item.subjectRequirement, subject) &&
-      matchKeyword(item.majorName, keyword)
-    );
-  });
+function renderExpandButton(container, total, expanded, onClick, limit) {
+  container.innerHTML = "";
+  if (total <= limit) return;
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "secondary-btn";
+  button.textContent = expanded ? "收起" : `展开全部 ${total} 条`;
+  button.addEventListener("click", onClick);
+  container.appendChild(button);
 }
 
-function handleRecommend() {
-  const userScore = toNumberOrNull(dom.scoreInput.value);
-  const userRank = toNumberOrNull(dom.rankInput.value);
-
-  if (userScore === null && userRank === null) {
-    dom.recommendResults.innerHTML = `<div class="empty-box">请至少输入高考分数或位次后再查询。</div>`;
-    return;
-  }
-
-  const baseList = getMainFilteredData();
-  const normalResults = baseList
-    .filter((item) => hasHistoricalData(item))
-    .map((item) => ({
-      ...item,
-      recommendType: getRecommendType(item, userScore, userRank),
-    }))
-    .filter((item) => item.recommendType)
-    .sort(sortRecommendResult);
-
-  const newMajorList = baseList.filter((item) => isNewMajor(item));
-  renderRecommendCards(normalResults, newMajorList, userScore, userRank);
-  document.getElementById("recommend").scrollIntoView({ behavior: "smooth" });
+function statusBadge(item) {
+  return isNewMajor(item)
+    ? `<span class="status-badge status-new">新开专业</span>`
+    : `<span class="status-badge status-normal">可参考</span>`;
 }
 
-function handleChance() {
-  const userScore = toNumberOrNull(dom.chanceScore.value);
-  const userRank = toNumberOrNull(dom.chanceRank.value);
-
-  if (userScore === null && userRank === null) {
-    dom.chanceResults.innerHTML = `<div class="empty-box">请至少输入高考分数或位次后再评估。</div>`;
-    return;
-  }
-
-  const province = dom.chanceProvince.value;
-  const year = dom.chanceYear.value;
-  const planYear = dom.chancePlanYear.value;
-  const category = dom.chanceCategory.value;
-  const subject = dom.chanceSubject.value;
-  const keyword = dom.chanceMajor.value.trim();
-
-  const results = allData
-    .filter((item) => {
-      return (
-        matchText(item.province, province) &&
-        matchText(String(item.year || ""), year) &&
-        matchText(String(item.planYear || ""), planYear) &&
-        matchText(item.enrollCategory, category) &&
-        matchText(item.subjectRequirement, subject) &&
-        matchKeyword(item.majorName, keyword)
-      );
-    })
-    .map((item) => ({
-      ...item,
-      chance: calculateAdmissionChance(item, userScore, userRank),
-    }))
-    .sort((a, b) => (b.chance.percent ?? -1) - (a.chance.percent ?? -1));
-
-  renderChanceCards(results, userScore, userRank);
+function getTagClass(type) {
+  if (type === "保一保") return "tag-safe";
+  if (type === "稳一稳") return "tag-stable";
+  if (type === "冲一冲") return "tag-rush";
+  if (type === "谨慎填报") return "tag-risk";
+  return "tag-muted";
 }
 
-function getRecommendType(item, userScore, userRank) {
-  // 位次越小表示排名越靠前，因此优先使用位次判断推荐类型。
-  if (userRank !== null && item.minRank !== null) {
-    const diff = item.minRank - userRank;
-    if (diff >= 5000) return "保一保";
-    if (diff >= -3000) return "稳一稳";
-    if (diff >= -10000) return "冲一冲";
-    return "";
+function getSpecialTip(category) {
+  if (isArtCategory(category)) {
+    return "美术类评估仅在美术类数据内部参考，不能与普通类分数直接比较。";
   }
-
-  if (userScore !== null && item.minScore !== null) {
-    const diff = userScore - item.minScore;
-    if (diff >= 30) return "保一保";
-    if (diff >= -10) return "稳一稳";
-    if (diff >= -25) return "冲一冲";
-  }
-
   return "";
 }
 
-function calculateAdmissionChance(item, userScore, userRank) {
-  if (!hasHistoricalData(item)) {
-    return {
-      percent: null,
-      level: "暂无往年数据",
-      reason: "该专业为新开或新增招生专业，暂无历史最低分和最低位次，建议结合招生计划、选科要求和学校招生章程人工判断。",
-    };
-  }
-
-  if (userRank !== null && item.minRank !== null) {
-    const diff = item.minRank - userRank;
-    if (diff >= 12000) return chanceResult(90, "较高", "你的位次明显优于往年最低位次。");
-    if (diff >= 5000) return chanceResult(78, "偏高", "你的位次优于往年最低位次，可作为保底或稳妥选择。");
-    if (diff >= -3000) return chanceResult(60, "中等", "你的位次接近往年最低位次，需要结合当年计划变化判断。");
-    if (diff >= -10000) return chanceResult(35, "偏低", "你的位次略低于往年最低位次，可作为冲刺选择。");
-    return chanceResult(15, "较低", "你的位次与往年最低位次差距较大，风险较高。");
-  }
-
-  if (userScore !== null && item.minScore !== null) {
-    const diff = userScore - item.minScore;
-    if (diff >= 45) return chanceResult(88, "较高", "你的分数明显高于往年最低分。");
-    if (diff >= 20) return chanceResult(76, "偏高", "你的分数高于往年最低分，可作为稳妥选择。");
-    if (diff >= -10) return chanceResult(58, "中等", "你的分数接近往年最低分，需要谨慎参考。");
-    if (diff >= -25) return chanceResult(34, "偏低", "你的分数略低于往年最低分，可作为冲刺选择。");
-    return chanceResult(12, "较低", "你的分数与往年最低分差距较大，风险较高。");
-  }
-
-  return chanceResult(0, "无法评估", "缺少可对比的分数或位次。");
-}
-
-function chanceResult(percent, level, reason) {
-  return { percent, level, reason };
-}
-
-function renderStats() {
-  dom.provinceCount.textContent = uniqueValues(allData.map((item) => item.province)).length;
-  dom.majorCount.textContent = uniqueValues(allData.map((item) => item.majorName)).length;
-  dom.scoreLineCount.textContent = allData.filter((item) => hasHistoricalData(item)).length;
-  dom.planTotal.textContent = allData.reduce((sum, item) => sum + (item.planCount || 0), 0);
-}
-
-function renderPlanTable(data) {
-  if (!data.length) {
-    dom.planTableBody.innerHTML = `<tr><td colspan="9">暂无符合条件的数据。</td></tr>`;
-    return;
-  }
-
-  dom.planTableBody.innerHTML = data
-    .map(
-      (item) => `
-        <tr>
-          <td>${escapeHtml(item.province)}</td>
-          <td>${escapeHtml(item.enrollCategory)}</td>
-          <td>${escapeHtml(item.majorName)}${statusBadge(item)}</td>
-          <td>${formatValue(item.year)}</td>
-          <td>${formatValue(item.minScore)}</td>
-          <td>${formatValue(item.minRank)}</td>
-          <td>${escapeHtml(item.subjectRequirement || "不限")}</td>
-          <td>${formatValue(item.planCount)}</td>
-          <td>${escapeHtml(item.batch || "")}</td>
-        </tr>
-      `
-    )
-    .join("");
-}
-
-function renderScoreTable(data) {
-  if (!data.length) {
-    dom.scoreTableBody.innerHTML = `<tr><td colspan="9">暂无符合条件的数据。</td></tr>`;
-    return;
-  }
-
-  dom.scoreTableBody.innerHTML = data
-    .map(
-      (item) => `
-        <tr>
-          <td>${escapeHtml(item.province)}</td>
-          <td>${escapeHtml(item.enrollCategory)}</td>
-          <td>${escapeHtml(item.majorName)}</td>
-          <td>${formatValue(item.year)}</td>
-          <td>${formatValue(item.minScore)}</td>
-          <td>${formatValue(item.minRank)}</td>
-          <td>${escapeHtml(item.subjectRequirement || "不限")}</td>
-          <td>${formatValue(item.planCount)}</td>
-          <td>${statusText(item)}</td>
-        </tr>
-      `
-    )
-    .join("");
-}
-
-function renderRecommendCards(results, newMajorList, userScore, userRank) {
-  if (!results.length && !newMajorList.length) {
-    dom.recommendResults.innerHTML = `<div class="empty-box">没有找到符合当前条件的推荐结果，请调整省份、类别或专业关键词。</div>`;
-    return;
-  }
-
-  const normalHtml = results.length
-    ? `
-      <div class="recommend-blocks">
-        <h3 class="group-title">可参考往年录取数据的专业</h3>
-        <div class="card-grid">${results.map((item) => resultCardTemplate(item, userScore, userRank, item.recommendType)).join("")}</div>
-      </div>
-    `
-    : "";
-
-  const newHtml = newMajorList.length
-    ? `
-      <div class="recommend-blocks">
-        <h3 class="group-title">新开专业 / 暂无往年录取数据</h3>
-        <div class="card-grid">${newMajorList.map((item) => newMajorCardTemplate(item)).join("")}</div>
-      </div>
-    `
-    : "";
-
-  const artTip = hasArtCategory([...results, ...newMajorList])
-    ? `<p class="notice small">美术类录取通常还需结合专业成绩、综合分规则和招生章程，本系统只做页面功能展示。</p>`
-    : "";
-
-  dom.recommendResults.innerHTML = normalHtml + newHtml + artTip;
-}
-
-function renderChanceCards(results, userScore, userRank) {
-  if (!results.length) {
-    dom.chanceResults.innerHTML = `<div class="empty-box">没有找到符合当前条件的专业。</div>`;
-    return;
-  }
-
-  const cards = results.map((item) => resultCardTemplate(item, userScore, userRank)).join("");
-  const artTip = hasArtCategory(results)
-    ? `<p class="notice small">美术类录取通常还需结合专业成绩、综合分规则和招生章程，本系统只做页面功能展示。</p>`
-    : "";
-  dom.chanceResults.innerHTML = `<div class="card-grid">${cards}</div>${artTip}`;
-}
-
-function resultCardTemplate(item, userScore, userRank, recommendType = "") {
-  const chance = item.chance || calculateAdmissionChance(item, userScore, userRank);
-  const percentHtml =
-    chance.percent === null
-      ? `<p class="chance-empty">暂无历史数据，无法估算录取几率。</p>`
-      : `<div class="chance-bar"><span style="width:${chance.percent}%"></span></div><strong>${chance.percent}%</strong>`;
-
-  return `
-    <article class="result-card">
-      <div class="result-head">
-        <h3>${escapeHtml(item.majorName)}</h3>
-        ${recommendType ? `<span class="tag ${tagClass(recommendType)}">${recommendType}</span>` : statusBadge(item)}
-      </div>
-      <p>${escapeHtml(item.schoolName)} · ${escapeHtml(item.province)} · ${escapeHtml(item.enrollCategory)}</p>
-      <ul>
-        <li>年份：${formatValue(item.year)}</li>
-        <li>最低分：${formatValue(item.minScore)}</li>
-        <li>最低位次：${formatValue(item.minRank)}</li>
-        <li>选科要求：${escapeHtml(item.subjectRequirement || "不限")}</li>
-        <li>2026计划：${formatValue(item.planCount)}人</li>
-      </ul>
-      <div class="chance-info">
-        ${percentHtml}
-        <p><b>${escapeHtml(chance.level)}</b>：${escapeHtml(chance.reason)}</p>
-      </div>
-    </article>
-  `;
-}
-
-function newMajorCardTemplate(item) {
-  return `
-    <article class="result-card">
-      <div class="result-head">
-        <h3>${escapeHtml(item.majorName)}</h3>
-        <span class="tag tag-new">新开专业</span>
-      </div>
-      <p>${escapeHtml(item.schoolName)} · ${escapeHtml(item.province)} · ${escapeHtml(item.enrollCategory)}</p>
-      <ul>
-        <li>年份：${formatValue(item.year)}</li>
-        <li>最低分：暂无</li>
-        <li>最低位次：暂无</li>
-        <li>选科要求：${escapeHtml(item.subjectRequirement || "不限")}</li>
-        <li>2026计划：${formatValue(item.planCount)}人</li>
-      </ul>
-      <div class="chance-info">
-        <p class="chance-empty">暂无往年录取分数和位次，不能按历史数据估算录取几率。</p>
-        <p>${escapeHtml(item.remark || "建议结合招生计划、选科要求和学校招生章程人工判断。")}</p>
-      </div>
-    </article>
-  `;
-}
-
-function copyMainInputsToChance() {
-  dom.chanceProvince.value = dom.provinceSelect.value;
-  dom.chanceYear.value = dom.yearSelect.value;
-  dom.chancePlanYear.value = dom.planYearSelect.value;
-  dom.chanceCategory.value = dom.categorySelect.value;
-  dom.chanceScore.value = dom.scoreInput.value;
-  dom.chanceRank.value = dom.rankInput.value;
-  dom.chanceSubject.value = dom.subjectSelect.value;
-  dom.chanceMajor.value = dom.majorKeyword.value;
+function isArtCategory(category) {
+  return String(category || "").includes("美术") || String(category || "").includes("设计");
 }
 
 function hasHistoricalData(item) {
@@ -7472,46 +7720,25 @@ function isNewMajor(item) {
   return item.minScore === null && item.minRank === null;
 }
 
-function statusBadge(item) {
-  if (!isNewMajor(item)) {
-    return `<span class="status-badge status-normal">有往年数据</span>`;
-  }
-  return `<span class="status-badge tag-new">暂无往年数据</span>`;
+function normalizeSubjectRequirement(value) {
+  const text = String(value || "")
+    .replace(/[，、,\/\s+]/g, "")
+    .replace(/不限|不提科目要求|无/g, "不限")
+    .replace(/物理化学|物化/g, "物理化学")
+    .replace(/物理/g, "物理")
+    .replace(/历史/g, "历史");
+  if (!text) return "";
+  if (text.includes("不限")) return "不限";
+  if (text.includes("物理") && text.includes("化学")) return "物理化学";
+  if (text.includes("物化")) return "物理化学";
+  if (text.includes("物理")) return "物理";
+  if (text.includes("历史")) return "历史";
+  return text;
 }
 
-function statusText(item) {
-  return isNewMajor(item)
-    ? `<span class="status-badge tag-new">新开专业暂无往年录取数据</span>`
-    : `<span class="status-badge status-normal">可参考</span>`;
-}
-
-function sortRecommendResult(a, b) {
-  const order = { "保一保": 1, "稳一稳": 2, "冲一冲": 3 };
-  return (order[a.recommendType] || 9) - (order[b.recommendType] || 9);
-}
-
-function hasArtCategory(list) {
-  return list.some((item) => String(item.enrollCategory || "").includes("美术"));
-}
-
-function tagClass(type) {
-  if (type === "保一保") return "tag-safe";
-  if (type === "稳一稳") return "tag-stable";
-  return "tag-chance";
-}
-
-function fillSelect(select, values, defaultText) {
-  select.innerHTML = `<option value="">${defaultText}</option>`;
-  values.forEach((value) => {
-    const option = document.createElement("option");
-    option.value = value;
-    option.textContent = value;
-    select.appendChild(option);
-  });
-}
-
-function uniqueValues(values) {
-  return [...new Set(values.filter((value) => value !== null && value !== undefined && String(value).trim() !== ""))];
+function matchSubject(actual, expected) {
+  if (!expected) return true;
+  return normalizeSubjectRequirement(actual) === normalizeSubjectRequirement(expected);
 }
 
 function matchText(actual, expected) {
@@ -7531,6 +7758,29 @@ function matchNumberRange(value, min, max) {
   return true;
 }
 
+function getRegionByProvince(province) {
+  return Object.keys(regionMap).find((region) => regionMap[region].includes(province)) || "";
+}
+
+function getProvincesInRegion(region) {
+  const available = uniqueValues(allData.map((item) => item.province));
+  return (regionMap[region] || []).filter((province) => available.includes(province));
+}
+
+function fillSelect(select, values, defaultText) {
+  select.innerHTML = `<option value="">${defaultText}</option>`;
+  values.forEach((value) => {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = value;
+    select.appendChild(option);
+  });
+}
+
+function uniqueValues(values) {
+  return [...new Set(values.filter((value) => value !== null && value !== undefined && String(value).trim() !== ""))];
+}
+
 function toNumberOrNull(value) {
   if (value === null || value === undefined || value === "") {
     return null;
@@ -7540,7 +7790,26 @@ function toNumberOrNull(value) {
 }
 
 function formatValue(value) {
-  return value === null || value === undefined || value === "" ? "" : value;
+  return value === null || value === undefined || value === "" ? "—" : value;
+}
+
+function formatDiff(value, unit) {
+  if (value === null || value === undefined) return "—";
+  if (value > 0) return `+${value}${unit}`;
+  if (value < 0) return `${value}${unit}`;
+  return `持平`;
+}
+
+function formatRankDiff(value) {
+  if (value === null || value === undefined) return "—";
+  if (value > 0) return `靠前 ${value} 名`;
+  if (value < 0) return `靠后 ${Math.abs(value)} 名`;
+  return "持平";
+}
+
+function setLoadStatus(message, type) {
+  dom.loadStatus.textContent = message;
+  dom.loadStatus.className = `load-status ${type === "success" ? "success" : type === "warning" ? "warning" : ""}`;
 }
 
 function escapeHtml(value) {
